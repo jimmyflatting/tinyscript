@@ -2,11 +2,8 @@
   <div class="container">
     <div class="first-row">
       <div class="content">
-        <h1 class="hero-title">Visualize Your
-          Colors & Fonts
-          On a Real Site</h1>
-        <p class="hero-subtitle">Choosing colors or typography for your website?
-          Use the Toolbar below to realize your choices.</p>
+        <h1 class="hero-title">Your AI-powered coding assistant for seamless development.</h1>
+        <p class="hero-subtitle">From squashing bugs to building features—when you're in a bind, TinyScript is here to help.</p>
         <a class="primary-btn" href="/app"><span>Get Started</span><i class="fa-solid fa-chevron-right"></i></a>
       </div>
     </div>

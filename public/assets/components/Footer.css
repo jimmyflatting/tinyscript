@@ -1,0 +1,29 @@
+.section-footer {
+  .card {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background-color: var(--card);
+    border-radius: var(--radius);
+    color: var(--text);
+    box-shadow: var(--shadow);
+  }
+  .footer-col {
+    display: flex;
+    gap: 2rem;
+  }
+  .footer-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .logo {
+    font-size: var(--text-lg);
+    font-weight: 400;
+    color: var(--primary);
+    span {
+      font-weight: 700;
+    }
+  }
+}

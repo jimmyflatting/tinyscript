@@ -4,15 +4,10 @@
       <a class="logo" href="/">
         Tiny<span>Script</span>
       </a>
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#pricing">Pricing</a></li>
-        <li><a href="#faq">What is this?</a></li>
-      </ul>
     </div>
     <div class="right-nav">
       <a class="secondary-btn" href="/app">Login</a>
-      <a class="primary-btn" href="/app">Try now</a>
+      <a class="primary-btn" href="/app">Get Started</a>
     </div>
   </div>
 </nav>

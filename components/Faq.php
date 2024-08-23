@@ -8,23 +8,15 @@
       <div class="questions">
         <div class="question">
           <h3>What is TinyScript?</h3>
-          <p>TinyScript is a tool that allows you to visualize your colors and fonts on a real website. You can use the toolbar below to realize your choices.</p>
+          <p>TinyScript is an AI-powered coding assistant designed to help developers write code more efficiently. Whether you're debugging, building new features, or just need a second pair of eyes.</p>
         </div>
         <div class="question">
           <h3>How do I use TinyScript?</h3>
-          <p>Simply click on the "Get Started" button on the homepage and you will be redirected to the app. From there, you can start customizing your colors and fonts.</p>
+          <p>Using TinyScript is simple! Just click on the "Get Started" button on the homepage, and you'll be redirected to the app. From there, you can begin coding with the assistance of TinyScript.</p>
         </div>
         <div class="question">
-          <h3>Is TinyScript free?</h3>
-          <p>Yes, TinyScript is completely free to use. You can create an account and start customizing your colors and fonts right away.</p>
-        </div>
-        <div class="question">
-          <h3>Can I save my projects?</h3>
-          <p>Yes, you can save your projects and come back to them later. Simply create an account and you will be able to access your saved projects from any device.</p>
-        </div>
-        <div class="question">
-          <h3>Do you offer support?</h3>
-          <p>Yes, we offer support for all of our users. If you have any questions or need help with the app, please feel free to email us at
+          <h3>Can I save my chats?</h3>
+          <p>Yes, you can save your chats. TinyScript allows you to keep a record of your coding sessions, so you can easily refer back to previous conversations whenever needed.</p>
         </div>
       </div>
     </div>
