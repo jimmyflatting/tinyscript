@@ -3,7 +3,7 @@
         <div class="output"></div>
     </div>
     <div class="input-box">
-        <input type="text" placeholder="Type something here..." />
+        <input disabled type="text" placeholder="|" />
     </div>
 </div>
 
@@ -13,12 +13,11 @@
     .terminal {
         width: auto;
         height: 400px;
-        background-color: #1d1f21;
-        color: #c5c8c6;
+        background-color: var(--card);
+        color: var(--primary);
         font-family: 'Courier New', Courier, monospace;
-        border-radius: 5px;
+        border-radius: var(--radius);
         padding: 15px;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -33,7 +32,7 @@
     }
 
     .output {
-        color: #c5c8c6;
+        color: var(--primary);
         font-family: inherit;
         font-size: 14px;
         line-height: 1.5;
@@ -41,26 +40,25 @@
 
     .input-box input {
         width: 100%;
-        background-color: #1d1f21;
+        background-color: var(--background);
         border: none;
         padding: 10px;
-        color: #c5c8c6;
+        color: var(--primary);
         font-family: inherit;
         font-size: 14px;
         outline: none;
-        border-radius: 5px;
-        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+        border-radius: var(--radius);
     }
 
     /* Style for code blocks */
     .output .code-block {
         display: block;
-        background-color: #282a2e;
+        background-color: var(--background);
         padding: 10px;
         border-radius: 5px;
         margin: 10px 0;
         font-family: 'Courier New', Courier, monospace;
-        color: #cc6666;
+        color: var(--primary);
         font-size: 13px;
         line-height: 1.4;
         white-space: pre;
@@ -75,8 +73,8 @@
         position: absolute;
         top: -20px;
         left: 0;
-        background-color: #3c3f41;
-        color: #c5c8c6;
+        background-color: var(--primary);
+        color: var(--background);
         padding: 2px 8px;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
@@ -84,7 +82,7 @@
     }
 
     pre {
-        background-color: #282a2e;
+        background-color: var(--card);
         padding: 10px;
         border-radius: 5px;
         overflow-x: auto;
@@ -93,7 +91,7 @@
 
     code {
         font-family: 'Courier New', Courier, monospace;
-        color: #cc6666;
+        color: var(--primary);
     }
 </style>
 

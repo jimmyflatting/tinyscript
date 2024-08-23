@@ -41,7 +41,7 @@
         <div class="footer">
           <a class="primary-btn" href="#">Get started</a>
           <div class="small-text">
-            <small>$108 billed annually</small>
+            <small>$90 billed annually</small>
             <small>Cancel anytime</small>
           </div>
         </div>
