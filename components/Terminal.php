@@ -65,12 +65,42 @@
         line-height: 1.4;
         white-space: pre;
     }
+
+    .code-block {
+        position: relative;
+        margin-top: 20px;
+    }
+
+    .language-bar {
+        position: absolute;
+        top: -20px;
+        left: 0;
+        background-color: #3c3f41;
+        color: #c5c8c6;
+        padding: 2px 8px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        font-size: 12px;
+    }
+
+    pre {
+        background-color: #282a2e;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+        margin-top: 20px;
+    }
+
+    code {
+        font-family: 'Courier New', Courier, monospace;
+        color: #cc6666;
+    }
 </style>
 
 <script>
     $(document).ready(function() {
         const commands = [
-            "How do I implement a linked list?",
+            "How do I implement a linked list in C++?",
             "What is the time complexity of binary search?",
             "Explain event delegation in JavaScript.",
             "How do I center a div in CSS?"
@@ -84,6 +114,11 @@
         ];
 
         let commandIndex = 0;
+
+        function scrollToBottom() {
+            let messageBox = $('.message-box');
+            messageBox.scrollTop(messageBox[0].scrollHeight);
+        }
 
         function typeIntoInput(command, callback) {
             let input = $('.input-box input');
@@ -100,30 +135,30 @@
 
         function typeAnswer(text, callback) {
             let output = $('.message-box .output');
+            let parsedText = renderCodeBlock(text);
+            let tempDiv = $('<div></div>');
             let i = 0;
             let interval = setInterval(function() {
-                output.html(output.html() + text.charAt(i));
-                output.scrollTop(output[0].scrollHeight); // Scroll to bottom as typing happens
+                tempDiv.html(parsedText.substring(0, i));
+                output.children().last().replaceWith(tempDiv.clone());
+                scrollToBottom();
                 i++;
-                if (i >= text.length) {
+                if (i > parsedText.length) {
                     clearInterval(interval);
+                    scrollToBottom(); // Ensure we scroll after the last character
                     if (callback) callback();
                 }
-            }, 50); // Adjust the speed of typing here
+            }, 50);
+            output.append(tempDiv); // Add an empty div that will be updated
         }
 
         function renderCodeBlock(text) {
-            // Convert markdown code blocks to HTML
-            text = text.replace(/```(\w*)\n([\s\S]*?)```/g, (match, lang, code) => {
-                return `<div class="code-block"><pre><code>${code}</code></pre></div>`;
+            // Add language bars to code blocks and remove markdown indicators
+            text = text.replace(/```(\w+)\n([\s\S]*?)```/g, function(match, lang, code) {
+                return `<div class="code-block"><div class="language-bar">${lang}</div><pre><code class="language-${lang}">${code.trim()}</code></pre></div>`;
             });
-            // Convert inline code to HTML
-            text = text.replace(/`([^`]+)`/g, (match, code) => {
-                return `<code>${code}</code>`;
-            });
-            // Replace newlines with <br/> for better formatting
-            text = text.replace(/\n/g, '<br/>');
-            return text;
+            // Use marked to parse the markdown
+            return marked.parse(text);
         }
 
         function executeCommand() {
@@ -135,16 +170,22 @@
 
                 typeIntoInput(command, function() {
                     setTimeout(function() {
-                        // Move command from input to output
-                        output.append(`> ${input.val()}<br/>`);
+                        // Append command to output
+                        output.append(marked.parse(`> ${input.val()}\n\n`));
+                        scrollToBottom();
                         input.val(''); // Clear input field
 
-                        // Prepare and type the result with potential code block rendering
-                        let renderedResult = renderCodeBlock(commandResult);
-                        typeAnswer(renderedResult, function() {
-                            commandIndex++;
-                            executeCommand(); // Execute the next command
-                        });
+                        // Add a small delay before starting to type the answer
+                        setTimeout(function() {
+                            // Prepare and type the result with potential code block rendering
+                            typeAnswer(commandResult, function() {
+                                commandIndex++;
+                                // Add a line break between QA pairs
+                                output.append('<br>');
+                                scrollToBottom();
+                                executeCommand(); // Execute the next command
+                            });
+                        }, 500);
                     }, 500);
                 });
             }
