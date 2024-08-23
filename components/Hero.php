@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="second-row">
-      <img src="./assets/chatpreview.png" alt="Hero image">
+      <?php get_template_part('Terminal'); ?>
     </div>
   </div>
 </section>
