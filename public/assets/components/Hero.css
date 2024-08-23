@@ -1,0 +1,52 @@
+/* Hero */
+.section-hero {
+  .container {
+    display: grid;
+    color: var(--text);
+    grid-gap: 1rem;
+    grid-template-columns: 2fr 1fr;
+  }
+  @media (max-width: 768px) {
+    .container {
+      grid-template-columns: 1fr;
+    }
+  }
+  .first-row {
+    display: flex;
+    background-color: var(--card);
+    border-radius: var(--radius);
+    padding: 2rem;
+    align-items: center;
+    .content {
+      margin: auto 0;
+
+      .hero-title {
+        font-size: var(--text-2xl);
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+      .hero-subtitle {
+        font-size: var(--text-md);
+        margin-bottom: 1.5rem;
+      }
+      a {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 25%;
+
+        @media screen and (max-width: 768px) {
+          margin: 0 auto;
+          width: 50%;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .first-row {
+      order: 2;
+      grid-template-columns: 1fr;
+    }
+  }
+}
