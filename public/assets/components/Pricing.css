@@ -42,7 +42,6 @@
       padding: 1rem;
       background-color: var(--card);
       border-radius: var(--radius);
-      box-shadow: var(--shadow);
       color: var(--text);
       text-align: center;
       a {

@@ -37,13 +37,17 @@
         transition: all 0.3s ease;
         @media screen and (max-width: 768px) {
           margin: 0 auto;
-          width: 30%;
+          width: auto;
         }
       }
     }
   }
 
   @media (max-width: 768px) {
+    h1,
+    p {
+      text-align: center;
+    }
     .first-row {
       order: 2;
       grid-template-columns: 1fr;

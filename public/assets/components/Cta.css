@@ -15,4 +15,13 @@
     font-size: var(--text-md);
     margin-bottom: 2rem;
   }
+
+  @media screen and (max-width: 768px) {
+    h2 {
+      text-align: center;
+    }
+    p {
+      text-align: center;
+    }
+  }
 }

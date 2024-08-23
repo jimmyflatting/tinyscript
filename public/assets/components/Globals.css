@@ -18,6 +18,12 @@ html {
   transition: all 0.3s ease;
 }
 
+@media screen and (max-width: 768px) {
+  h2 {
+    line-height: 1.2;
+  }
+}
+
 /* Colors */
 :root {
   --text: #e2fbf5;
@@ -27,7 +33,6 @@ html {
   --secondary: #164e95;
   --accent: #4060e3;
   --radius: 0.5rem;
-  --shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
 
   --text-sm: 8px;
   --text-md: 14px;
@@ -71,7 +76,6 @@ section {
   border-radius: var(--radius);
   padding: 2rem;
   color: var(--text);
-  box-shadow: var(--shadow);
 }
 
 .primary-btn {
