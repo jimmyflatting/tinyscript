@@ -11,7 +11,7 @@
 
 <style>
     .terminal {
-        width: 100%;
+        width: auto;
         height: 400px;
         background-color: #1d1f21;
         color: #c5c8c6;
@@ -110,7 +110,7 @@
             `To implement a linked list in C++:\n\n\`\`\`cpp\nstruct Node { int data; Node* next; };\nNode* head = NULL; // empty list\n\`\`\``,
             "The time complexity of binary search is O(log n), where n is the number of elements in the array.",
             "Event delegation is a technique where you use a single event listener to manage events for multiple elements.",
-            `To center a div in CSS, you can use:\n\n\`\`\`css\ndiv { display: flex; justify-content: center; align-items: center; }\n\`\`\``
+            `To center a div in CSS, you can use:\n\n\`\`\`css\ndiv { display: flex; justify-content:\n center; align-items: center; }\n\`\`\``
         ];
 
         let commandIndex = 0;
