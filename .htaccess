@@ -1,9 +1,15 @@
 <IfModule mod_rewrite.c>
-RewriteEngine On
-RewriteBase /tinyscript/
+    Options +FollowSymLinks
+    RewriteEngine On
 
-RewriteCond %{THE_REQUEST} /public/([^\s?]*) [NC]
-RewriteRule ^ %1 [L,NE,R=302]
+    RewriteCond %{REQUEST_URI} !^/public/
 
-RewriteRule ^((?!public/).*)$ public/$1 [L,NC]
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+
+
+
+    RewriteRule ^(.*)$ /public/$1
+    #RewriteRule ^ index.php [L]
+    RewriteRule ^(/)?$ public/index.php [L]
 </IfModule>
