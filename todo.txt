@@ -1,3 +1,4 @@
-login / auth (maybe google?)
-setup db w/ users
-integrate stripe for subscriptions - $9 monthly, $24 quarterly,  $90 yearly
+-- replicate (model) api
+-- chat ui
+-- settings ui
+-- stripe, buy / cancel

@@ -4,10 +4,14 @@ namespace App;
 
 class Controller
 {
-  protected function render($view, $data = [])
+  public function render($view, $data = [])
   {
     extract($data);
-
-    include "Views/$view.php";
+    $viewPath = __DIR__ . '/Views/' . $view . '.php';
+    if (file_exists($viewPath)) {
+      include $viewPath;
+    } else {
+      throw new \Exception("View file not found: $viewPath");
+    }
   }
 }

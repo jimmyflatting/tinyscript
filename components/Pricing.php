@@ -15,7 +15,10 @@
           </ul>
         </div>
         <div class="footer">
-          <a class="secondary-btn" href="#">Get started</a>
+          <form method="POST" action="/create-checkout-session">
+            <input type="hidden" name="price_id" value="price_monthly">
+            <button type="submit" class="secondary-btn">Get started</button>
+          </form>
           <div class="small-text">
             <small>$19 billed every month</small>
             <small>Cancel anytime</small>
@@ -39,7 +42,10 @@
           </ul>
         </div>
         <div class="footer">
-          <a class="primary-btn" href="#">Get started</a>
+          <form method="POST" action="/create-checkout-session">
+            <input type="hidden" name="price_id" value="price_yearly">
+            <button type="submit" class="secondary-btn">Get started</button>
+          </form>
           <div class="small-text">
             <small>$90 billed annually</small>
             <small>Cancel anytime</small>
@@ -60,7 +66,10 @@
           </ul>
         </div>
         <div class="footer">
-          <a class="secondary-btn" href="#">Get started</a>
+          <form method="POST" action="/create-checkout-session">
+            <input type="hidden" name="price_id" value="price_quarterly">
+            <button type="submit" class="secondary-btn">Get started</button>
+          </form>
           <div class="small-text">
             <small>$42 billed every 3 months</small>
             <small>Cancel anytime</small>

@@ -4,43 +4,55 @@ namespace App;
 
 class Router
 {
-  protected $routes = [];
+  private $routes = [];
 
-  private function addRoute($route, $controller, $action, $method)
+  public function get($path, $controller, $action, $middleware = null)
   {
-    $this->routes[$method][$route] = ['controller' => $controller, 'action' => $action];
+    $this->addRoute('GET', $path, $controller, $action, $middleware);
   }
 
-  public function get($route, $controller, $action)
+  public function post($path, $controller, $action, $middleware = null)
   {
-    $this->addRoute($route, $controller, $action, "GET");
+    $this->addRoute('POST', $path, $controller, $action, $middleware);
   }
 
-  public function post($route, $controller, $action)
+  private function addRoute($method, $path, $controller, $action, $middleware)
   {
-    $this->addRoute($route, $controller, $action, "POST");
+    $this->routes[] = [
+      'method' => $method,
+      'path' => $path,
+      'controller' => $controller,
+      'action' => $action,
+      'middleware' => $middleware
+    ];
   }
 
   public function dispatch()
   {
-    $uri = strtok($_SERVER['REQUEST_URI'], '?');
-    $method = $_SERVER['REQUEST_METHOD'];
+    $requestMethod = $_SERVER['REQUEST_METHOD'];
+    $requestPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-    if (array_key_exists($uri, $this->routes[$method])) {
-      $controller = $this->routes[$method][$uri]['controller'];
-      $action = $this->routes[$method][$uri]['action'];
-
-      $controller = new $controller();
-      $controller->$action();
-    } else {
-      // Render a custom 404 page
-      $this->render404();
+    foreach ($this->routes as $route) {
+      if ($route['method'] === $requestMethod && $route['path'] === $requestPath) {
+        if ($route['middleware']) {
+          $middlewareClass = $route['middleware'][0];
+          $middlewareMethod = $route['middleware'][1];
+          $middlewareClass::$middlewareMethod();
+        }
+        $controller = new $route['controller']();
+        $action = $route['action'];
+        $controller->$action();
+        return;
+      }
     }
+
+    // If no route matches, render the 404 page
+    $this->render404();
   }
 
   private function render404()
   {
     http_response_code(404);
-    require __DIR__ . '/Views/404.php'; // Adjust the path to your views directory
+    require __DIR__ . '/Views/404.php';
   }
 }

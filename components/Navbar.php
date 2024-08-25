@@ -6,8 +6,13 @@
       </a>
     </div>
     <div class="right-nav">
-      <a class="secondary-btn" href="/app">Login</a>
-      <a class="primary-btn" href="/app">Get Started</a>
+      <?php if (isset($_SESSION['user_id'])): ?>
+        <a class="secondary-btn" href="/logout">Logout</a>
+        <a class="primary-btn" href="/app">Dashboard</a>
+      <?php else: ?>
+        <a class="secondary-btn" href="/login">Login</a>
+        <a class="primary-btn" href="/signup">Sign Up</a>
+      <?php endif; ?>
     </div>
   </div>
 </nav>
