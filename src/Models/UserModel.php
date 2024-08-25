@@ -115,4 +115,34 @@ class UserModel
         $stmt->execute([$email]);
         return $stmt->fetchColumn();
     }
+
+    public function updateUser($userId, $name, $email)
+    {
+        $query = "UPDATE users SET name = :name, email = :email WHERE id = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+    public function changePassword($userId, $currentPassword, $newPassword)
+    {
+        $user = $this->getUser($userId);
+        if (password_verify($currentPassword, $user['password'])) {
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+            $query = "UPDATE users SET password = :password WHERE id = :id";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':password', $hashedPassword);
+            $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+            return $stmt->execute();
+        }
+        return false;
+    }
+    public function cancelSubscription($userId)
+    {
+        $query = "UPDATE users SET active_subscription = 0, subscription_end_date = NULL WHERE id = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 }

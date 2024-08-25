@@ -11,9 +11,4 @@ class AppController extends Controller
 
     $this->render('app');
   }
-
-  public function auth()
-  {
-    $this->render('login');
-  }
 }

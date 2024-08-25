@@ -14,75 +14,6 @@ class UserController extends Controller
         $this->userModel = new UserModel();
     }
 
-    public function create()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = $_POST['name'] ?? '';
-            $email = $_POST['email'] ?? '';
-
-            if ($this->userModel->createUser($name, $email)) {
-                // Redirect to a success page or user list
-                header('Location: /users');
-                exit;
-            } else {
-                $error = "Failed to create user";
-            }
-        }
-
-        $this->render('user/create', ['error' => $error ?? null]);
-    }
-
-    public function read($id)
-    {
-        $user = $this->userModel->getUser($id);
-
-        if ($user) {
-            $this->render('user/read', ['user' => $user]);
-        } else {
-            $this->render('404');
-        }
-    }
-
-    public function update($id)
-    {
-        $user = $this->userModel->getUser($id);
-
-        if (!$user) {
-            $this->render('404');
-            return;
-        }
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $active = isset($_POST['active_subscription']) ? 1 : 0;
-            $startDate = $_POST['subscription_date'] ?? null;
-            $endDate = $_POST['subscription_end_date'] ?? null;
-
-            if ($this->userModel->updateSubscription($id, $active, $startDate, $endDate)) {
-                header('Location: /users/' . $id);
-                exit;
-            } else {
-                $error = "Failed to update user";
-            }
-        }
-
-        $this->render('user/update', ['user' => $user, 'error' => $error ?? null]);
-    }
-
-    public function delete($id)
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if ($this->userModel->deleteUser($id)) {
-                header('Location: /users');
-                exit;
-            } else {
-                $error = "Failed to delete user";
-            }
-        }
-
-        $user = $this->userModel->getUser($id);
-        $this->render('user/delete', ['user' => $user, 'error' => $error ?? null]);
-    }
-
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -120,10 +51,59 @@ class UserController extends Controller
         $this->render('user/signup', ['error' => $error ?? null]);
     }
 
-    public function dashboard()
+    public function settings()
     {
         $userId = $_SESSION['user_id'];
         $user = $this->userModel->getUser($userId);
-        $this->render('dashboard', ['user' => $user]);
+        $this->render('settings', ['user' => $user]);
+    }
+
+    public function updateProfile()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $userId = $_SESSION['user_id'];
+            $name = $_POST['name'] ?? '';
+            $email = $_POST['email'] ?? '';
+            if ($this->userModel->updateUser($userId, $name, $email)) {
+                $_SESSION['success_message'] = "Profile updated successfully.";
+            } else {
+                $_SESSION['error_message'] = "Failed to update profile.";
+            }
+        }
+        header('Location: /app/settings');
+        exit;
+    }
+
+    public function changePassword()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $userId = $_SESSION['user_id'];
+            $currentPassword = $_POST['current_password'] ?? '';
+            $newPassword = $_POST['new_password'] ?? '';
+            $confirmPassword = $_POST['confirm_password'] ?? '';
+            if ($newPassword !== $confirmPassword) {
+                $_SESSION['error_message'] = "New passwords do not match.";
+            } elseif ($this->userModel->changePassword($userId, $currentPassword, $newPassword)) {
+                $_SESSION['success_message'] = "Password changed successfully.";
+            } else {
+                $_SESSION['error_message'] = "Failed to change password.";
+            }
+        }
+        header('Location: /app/settings');
+        exit;
+    }
+
+    public function cancelSubscription()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $userId = $_SESSION['user_id'];
+            if ($this->userModel->cancelSubscription($userId)) {
+                $_SESSION['success_message'] = "Subscription cancelled successfully.";
+            } else {
+                $_SESSION['error_message'] = "Failed to cancel subscription.";
+            }
+        }
+        header('Location: /app/settings');
+        exit;
     }
 }

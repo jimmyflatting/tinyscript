@@ -15,7 +15,7 @@
           </ul>
         </div>
         <div class="footer">
-          <form method="POST" action="/create-checkout-session">
+          <form method="POST" action="/app/create-checkout-session">
             <input type="hidden" name="price_id" value="price_monthly">
             <button type="submit" class="secondary-btn">Get started</button>
           </form>
@@ -42,7 +42,7 @@
           </ul>
         </div>
         <div class="footer">
-          <form method="POST" action="/create-checkout-session">
+          <form method="POST" action="/app/create-checkout-session">
             <input type="hidden" name="price_id" value="price_yearly">
             <button type="submit" class="secondary-btn">Get started</button>
           </form>
@@ -66,7 +66,7 @@
           </ul>
         </div>
         <div class="footer">
-          <form method="POST" action="/create-checkout-session">
+          <form method="POST" action="/app/create-checkout-session">
             <input type="hidden" name="price_id" value="price_quarterly">
             <button type="submit" class="secondary-btn">Get started</button>
           </form>

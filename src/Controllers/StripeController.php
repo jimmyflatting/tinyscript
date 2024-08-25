@@ -45,8 +45,8 @@ class StripeController extends Controller
                     'quantity' => 1,
                 ]],
                 'mode' => 'subscription',
-                'success_url' => $_ENV['HOME_URL'] . '/app?session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url' => $_ENV['HOME_URL'],
+                'success_url' => $_ENV['HOME_URL'] . '/app/subscription/success?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url' => $_ENV['HOME_URL'] . '/app/subscription/cancel',
                 'client_reference_id' => $userId,
             ]);
 
