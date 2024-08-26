@@ -1,0 +1,175 @@
+@import url('./components/Globals.css');
+
+.app-container {
+  display: flex;
+  height: 100vh;
+  background-color: var(--background);
+  color: var(--text);
+}
+
+.sidebar {
+  width: 250px;
+  background-color: var(--card);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  font-size: var(--text-xl);
+  color: var(--primary);
+  margin-bottom: 30px;
+}
+
+.logo span {
+  font-weight: bold;
+}
+
+.nav-links {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-links li {
+  margin-bottom: 10px;
+}
+
+.nav-links a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: var(--radius);
+  transition: background-color 0.3s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  background-color: var(--primary);
+  color: var(--background);
+}
+
+.nav-links i {
+  margin-right: 10px;
+}
+
+.user-info {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.content section {
+  display: none;
+}
+
+.content section.active {
+  display: block;
+}
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+}
+
+.chat-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  max-width: 70%;
+  padding: 10px 15px;
+  border-radius: var(--radius);
+  margin-bottom: 10px;
+}
+
+.message.user {
+  align-self: flex-end;
+  background-color: var(--primary);
+  color: var(--background);
+}
+
+.message.bot {
+  align-self: flex-start;
+  background-color: var(--card);
+}
+
+.chat-input {
+  display: flex;
+  margin-top: 20px;
+}
+
+.chat-input textarea {
+  flex-grow: 1;
+  padding: 10px;
+  border: none;
+  border-radius: var(--radius);
+  background-color: var(--card);
+  color: var(--text);
+  resize: none;
+}
+
+.chat-input button {
+  background-color: var(--primary);
+  color: var(--background);
+  border: none;
+  border-radius: var(--radius);
+  padding: 10px 20px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: var(--radius);
+  background-color: var(--card);
+  color: var(--text);
+}
+
+.billing-history {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.billing-history th,
+.billing-history td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--card);
+}
+
+.billing-history th {
+  background-color: var(--card);
+}
