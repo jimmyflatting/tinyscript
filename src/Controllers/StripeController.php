@@ -33,7 +33,7 @@ class StripeController extends Controller
         $priceId = $_POST['price_id'] ?? null;
         if (!$priceId) {
             // Handle error
-            $this->render('subscription/error', ['message' => 'Invalid price ID']);
+            $this->render('stripe-error', ['message' => 'Invalid price ID']);
             return;
         }
 
@@ -45,7 +45,7 @@ class StripeController extends Controller
                     'quantity' => 1,
                 ]],
                 'mode' => 'subscription',
-                'success_url' => $_ENV['HOME_URL'] . '/app/subscription/success?session_id={CHECKOUT_SESSION_ID}',
+                'success_url' => $_ENV['HOME_URL'] . '/app/success?session_id={CHECKOUT_SESSION_ID}',
                 'cancel_url' => $_ENV['HOME_URL'] . '/app/subscription/cancel',
                 'client_reference_id' => $userId,
             ]);
@@ -53,7 +53,7 @@ class StripeController extends Controller
             header('Location: ' . $session->url);
             exit;
         } catch (\Exception $e) {
-            $this->render('subscription/error', ['message' => $e->getMessage()]);
+            $this->render('stripe-error', ['message' => $e->getMessage()]);
         }
     }
 
@@ -62,7 +62,7 @@ class StripeController extends Controller
         $sessionId = $_GET['session_id'] ?? null;
         if (!$sessionId) {
             // Handle error
-            $this->render('subscription/error', ['message' => 'Invalid session ID']);
+            $this->render('stripe-error', ['message' => 'Invalid session ID']);
             return;
         }
 
