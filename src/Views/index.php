@@ -110,7 +110,7 @@
                         </div>
                         <div class="footer">
                             <form method="POST" action="/app/create-checkout-session">
-                                <input type="hidden" name="price_id" value="price_monthly">
+                                <input type="hidden" name="price_id" value="price_1PrjsIGq5NXltWyk0fLJlUR2">
                                 <button type="submit" class="primary-btn">Get started</button>
                             </form>
                         </div>
@@ -133,7 +133,7 @@
                         </div>
                         <div class="footer">
                             <form method="POST" action="/app/create-checkout-session">
-                                <input type="hidden" name="price_id" value="price_yearly">
+                                <input type="hidden" name="price_id" value="price_1PrjsIGq5NXltWyklZBGeHCR">
                                 <button type="submit" class="primary-btn">Get started</button>
                             </form>
                         </div>

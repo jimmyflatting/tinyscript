@@ -66,7 +66,7 @@
                     <li>Unlimited chat history</li>
                   </ul>
                   <form method="POST" action="/app/create-checkout-session">
-                    <input type="hidden" name="price_id" value="price_monthly">
+                    <input type="hidden" name="price_id" value="price_1PrjsIGq5NXltWyk0fLJlUR2">
                     <button type="submit" class="primary-btn">Subscribe Monthly</button>
                   </form>
                 </div>
@@ -79,7 +79,7 @@
                     <li>Two months free</li>
                   </ul>
                   <form method="POST" action="/app/create-checkout-session">
-                    <input type="hidden" name="price_id" value="price_yearly">
+                    <input type="hidden" name="price_id" value="price_1PrjsIGq5NXltWyklZBGeHCR">
                     <button type="submit" class="primary-btn">Subscribe Yearly</button>
                   </form>
                 </div>
