@@ -29,10 +29,10 @@ class AuthController extends Controller
             }
         }
 
-        $this->render('auth/login', ['error' => $error ?? null]);
+        $this->render('login', ['error' => $error ?? null]);
     }
 
-    public function signup()
+    public function register()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = $_POST['name'] ?? '';
@@ -48,7 +48,7 @@ class AuthController extends Controller
             }
         }
 
-        $this->render('auth/signup', ['error' => $error ?? null]);
+        $this->render('register', ['error' => $error ?? null]);
     }
 
     public function logout()

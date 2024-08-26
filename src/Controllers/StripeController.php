@@ -26,7 +26,7 @@ class StripeController extends Controller
 
         $userId = $_SESSION['user_id'] ?? null;
         if (!$userId) {
-            header('Location: /signup');
+            header('Location: /register');
             exit;
         }
 
@@ -41,7 +41,7 @@ class StripeController extends Controller
             $session = Session::create([
                 'payment_method_types' => ['card'],
                 'line_items' => [[
-                    'price' => 'price_1PrjsIGq5NXltWykKCOFMazx',
+                    'price' => $priceId,
                     'quantity' => 1,
                 ]],
                 'mode' => 'subscription',

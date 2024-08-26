@@ -1,4 +1,4 @@
-@import url('./components/Globals.css');
+@import url("./components/Globals.css");
 
 .app-container {
   display: flex;
@@ -29,6 +29,9 @@
   list-style-type: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .nav-links li {
@@ -172,4 +175,115 @@
 
 .billing-history th {
   background-color: var(--card);
+}
+
+.settings-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+@media screen and (max-width: 768px) {
+  .settings-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.settings-container .card {
+  background-color: var(--card);
+  border-radius: var(--radius);
+  padding: 2rem;
+  color: var(--text);
+}
+
+.settings-container h3 {
+  color: var(--primary);
+  font-size: var(--text-lg);
+  margin-bottom: 1rem;
+}
+
+.settings-container .form-group {
+  margin-bottom: 1rem;
+}
+
+.settings-container label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.settings-container input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--primary);
+  border-radius: var(--radius);
+  background-color: var(--background);
+  color: var(--text);
+}
+
+.subscription-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+  .subscription-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+.subscription-card {
+  background-color: var(--background);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius);
+  padding: 1rem;
+  text-align: center;
+}
+
+.subscription-card.popular {
+  border-width: 2px;
+  box-shadow: 0 0 10px rgba(126, 235, 216, 0.3);
+}
+
+.subscription-card h4 {
+  color: var(--primary);
+  font-size: var(--text-lg);
+  margin-bottom: 0.5rem;
+}
+
+.subscription-card .price {
+  font-size: var(--text-xl);
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.subscription-card .price span {
+  font-size: var(--text-md);
+  font-weight: normal;
+}
+
+.subscription-card ul {
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+.subscription-card li {
+  margin-bottom: 0.5rem;
+}
+
+.subscription-card form {
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .settings-container {
+    flex-direction: column;
+  }
+
+  .subscription-options {
+    flex-direction: column;
+  }
 }

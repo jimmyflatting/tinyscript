@@ -1,0 +1,11 @@
+/* Components */
+@import url("./components/Globals.css");
+@import url("./components/Navbar.css");
+@import url("./components/Hero.css");
+@import url("./components/Cards.css");
+@import url("./components/Pricing.css");
+@import url("./components/Faq.css");
+@import url("./components/Cta.css");
+@import url("./components/Footer.css");
+@import url("./components/404.css");
+@import url("./components/Terminal.css");

@@ -7,6 +7,4 @@ $dotenv->load();
 
 session_start();
 
-require '../lib/general-template.php';
-
 $router = require '../src/Routes/index.php';

@@ -14,8 +14,8 @@ $router = new Router();
 $router->get('/', HomeController::class, 'index');
 $router->get('/login', AuthController::class, 'login');
 $router->post('/login', AuthController::class, 'login');
-$router->get('/signup', AuthController::class, 'signup');
-$router->post('/signup', AuthController::class, 'signup');
+$router->get('/register', AuthController::class, 'register');
+$router->post('/register', AuthController::class, 'register');
 $router->get('/logout', AuthController::class, 'logout');
 
 // App routes (protected)

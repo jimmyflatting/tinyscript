@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TinyScript App</title>
-  <link rel="stylesheet" href="./assets/app.css">
+  <link rel="stylesheet" href="./css/app.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
@@ -18,13 +18,8 @@
       </div>
       <ul class="nav-links">
         <li><a href="#" class="active" data-section="chat"><i class="fas fa-comment"></i> Chat</a></li>
-        <li><a href="#" data-section="profile"><i class="fas fa-user"></i> Profile</a></li>
-        <li><a href="#" data-section="billing"><i class="fas fa-credit-card"></i> Billing</a></li>
+        <li><a href="#" data-section="settings"><i class="fas fa-cog"></i> Settings</a></li>
       </ul>
-      <div class="user-info">
-        <img src="https://via.placeholder.com/40" alt="User Avatar" class="avatar">
-        <span class="username">John Doe</span>
-      </div>
     </nav>
     <main class="content">
       <section id="chat" class="active">
@@ -36,23 +31,70 @@
           </div>
         </div>
       </section>
-      <section id="profile">
-        <h2>Edit Profile</h2>
-        <form id="profile-form">
-          <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" required>
+      <section id="settings">
+        <h2>Settings</h2>
+        <div class="settings-container">
+          <div class="card account-settings">
+            <h3>Account Settings</h3>
+            <form id="profile-form">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" value="<?php echo $user['name']; ?>" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="<?php echo $user['email']; ?>" required>
+              </div>
+              <div class="form-group">
+                <label for="password">New Password</label>
+                <input type="password" id="password" name="password">
+              </div>
+              <button type="submit" class="primary-btn">Save Changes</button>
+            </form>
           </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required>
-          </div>
-          <div class="form-group">
-            <label for="password">New Password</label>
-            <input type="password" id="password" name="password">
-          </div>
-          <button type="submit" class="primary-btn">Save Changes</button>
-        </form>
+
+          <?php if (!$user['active_subscription']): ?>
+            <div class="card subscription-settings">
+              <h3>Upgrade to Pro</h3>
+              <p>Unlock unlimited access with a Pro subscription!</p>
+              <div class="subscription-options">
+                <div class="subscription-card">
+                  <h4>Monthly</h4>
+                  <p class="price">$10<span>/month</span></p>
+                  <ul>
+                    <li>Full access to all features</li>
+                    <li>Unlimited chat history</li>
+                  </ul>
+                  <form method="POST" action="/app/create-checkout-session">
+                    <input type="hidden" name="price_id" value="price_monthly">
+                    <button type="submit" class="primary-btn">Subscribe Monthly</button>
+                  </form>
+                </div>
+                <div class="subscription-card popular">
+                  <h4>Yearly</h4>
+                  <p class="price">$100<span>/year</span></p>
+                  <ul>
+                    <li>Full access to all features</li>
+                    <li>Unlimited chat history</li>
+                    <li>Two months free</li>
+                  </ul>
+                  <form method="POST" action="/app/create-checkout-session">
+                    <input type="hidden" name="price_id" value="price_yearly">
+                    <button type="submit" class="primary-btn">Subscribe Yearly</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          <?php else: ?>
+            <div class="card subscription-settings">
+              <h3>Pro Subscription</h3>
+              <p>You are currently on the Pro plan. Enjoy all the features!</p>
+              <form method="POST" action="/app/cancel-subscription">
+                <button type="submit" class="secondary-btn">Cancel Subscription</button>
+              </form>
+            </div>
+          <?php endif; ?>
+        </div>
       </section>
       <section id="billing">
         <h2>Billing Information</h2>
@@ -90,7 +132,7 @@
       </section>
     </main>
   </div>
-  <script src="./assets/js/app.js"></script>
+  <script src="./js/app.js"></script>
 </body>
 
 </html>

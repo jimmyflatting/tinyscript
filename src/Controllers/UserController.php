@@ -48,7 +48,7 @@ class UserController extends Controller
             }
         }
 
-        $this->render('user/signup', ['error' => $error ?? null]);
+        $this->render('register', ['error' => $error ?? null]);
     }
 
     public function settings()
