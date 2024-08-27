@@ -18,36 +18,29 @@
         Tiny<span>Script</span>
       </div>
       <ul class="nav-links">
-        <li><a href="#" class="active" data-section="chat"><i class="fas fa-comment"></i> Chat</a></li>
-        <li><a href="#" data-section="settings"><i class="fas fa-cog"></i> Settings</a></li>
+        <li><a href="#" id="chat-link" data-section="chat"><i class="fas fa-comment"></i> Chat</a></li>
+        <li><a href="/app#settings" id="settings-link" data-section="settings"><i class="fas fa-cog"></i> Settings</a></li>
       </ul>
-      <!-- Add this inside the sidebar, just below the nav-links -->
-      <?php if ($user['subscription_status'] === 'trial'): ?>
-        <div class="token-display">
-          <i class="fas fa-coins"></i>
-          <span id="token-count"><?php echo $user['tokens_available']; ?></span> tokens
-        </div>
-      <?php else: ?>
-        <div class="subscription-status">
-          <i class="fas fa-check-circle"></i>
-          Active Subscription
-        </div>
-      <?php endif; ?>
     </nav>
     <main class="content">
-      <div class="token-balance">
-        <i class="fas fa-coins"></i>
-        <span id="token-count"><?php echo $user['tokens_available']; ?></span> tokens available
-      </div>
+
       <section id="chat" class="active">
         <div class="chat-container">
           <div class="chat-messages"></div>
+          <div id="subscription-popup" class="popup" style="display: none;">
+            <div class="popup-content">
+              <h3>Out of Tokens</h3>
+              <p>You've used all your available tokens. Upgrade to a Pro subscription for unlimited access!</p>
+              <button id="upgrade-btn" class="primary-btn">Upgrade Now</button>
+            </div>
+          </div>
           <div class="chat-input">
             <textarea placeholder="Type your message here..."></textarea>
             <button class="send-btn"><i class="fas fa-paper-plane"></i></button>
           </div>
         </div>
       </section>
+
       <section id="settings">
         <h2>Settings</h2>
         <div class="settings-container">
@@ -104,59 +97,45 @@
             </div>
           <?php else: ?>
             <div class="card subscription-settings">
-              <h3>Pro Subscription</h3>
-              <p>You are currently on the Pro plan. Enjoy all the features!</p>
-              <form method="POST" action="/app/cancel-subscription">
-                <button type="submit" class="secondary-btn">Cancel Subscription</button>
-              </form>
+              <div class="subscription-settings-text">
+                <h3>Pro Subscription</h3>
+                <p>Subscription Status: <?php echo $user['subscription_status']; ?></p>
+                <?php if ($user['subscription_status'] === 'active'): ?>
+                  <p>Subscription Renews: <?php echo $user['subscription_end_date']; ?></p>
+                <?php elseif ($user['subscription_status'] === 'inactive'): ?>
+                  <p>Subscription Ends: <?php echo $user['subscription_end_date']; ?></p>
+                <?php endif; ?>
+              </div>
+              <?php if ($user['subscription_status'] === 'active'): ?>
+                <form method="POST" action="/app/cancel-subscription">
+                  <button type="submit" class="primary-btn">Cancel Subscription</button>
+                </form>
+              <?php endif; ?>
+
             </div>
           <?php endif; ?>
-          <!-- Add this inside the settings section -->
-          <div class="card token-management">
-            <h3>Token Management</h3>
-            <p>You have <span id="token-count-settings"><?php echo $user['tokens_available']; ?></span> tokens available.</p>
-            <p>Tokens are used for each message sent to the AI. When you run out of tokens, you'll need to upgrade your subscription or purchase more tokens.</p>
-            <button id="buy-tokens" class="primary-btn">Buy More Tokens</button>
-          </div>
         </div>
-      </section>
-      <section id="billing">
-        <h2>Billing Information</h2>
-        <div class="subscription-info">
-          <p>Current Plan: <span id="current-plan">Pro</span></p>
-          <p>Next Billing Date: <span id="next-billing-date">June 1, 2023</span></p>
-        </div>
-        <h3>Payment Method</h3>
-        <div class="payment-method">
-          <p>Credit Card ending in <span id="card-last-four">1234</span></p>
-          <button class="secondary-btn">Update Payment Method</button>
-        </div>
-        <h3>Billing History</h3>
-        <table class="billing-history">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Amount</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>May 1, 2023</td>
-              <td>$19.99</td>
-              <td>Paid</td>
-            </tr>
-            <tr>
-              <td>April 1, 2023</td>
-              <td>$19.99</td>
-              <td>Paid</td>
-            </tr>
-          </tbody>
-        </table>
       </section>
     </main>
   </div>
   <script src="./js/app.js"></script>
+  <script>
+    $(document).ready(function() {
+      if (<?php echo json_encode($user['subscription_status'] === 'trial' && $user['tokens_available'] <= 0); ?>) {
+        $('#subscription-popup').show();
+        $('.chat-input').hide();
+      }
+      $('#upgrade-btn').click(function() {
+        $('#chat').removeClass('active');
+        $('#settings').addClass('active');
+        $('#chat-link').removeClass('active');
+        $('#settings-link').addClass('active');
+      });
+
+      // Set initial active nav-link based on the active section
+      $('.nav-links a[data-section="' + $('.content section.active').attr('id') + '"]').addClass('active');
+    });
+  </script>
 </body>
 
 </html>

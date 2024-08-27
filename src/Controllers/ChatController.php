@@ -5,19 +5,16 @@ namespace App\Controllers;
 use App\Controller;
 use App\Models\ChatModel;
 use App\Models\UserModel;
-use App\RateLimiter;
 
 class ChatController extends Controller
 {
     private $chatModel;
     private $userModel;
-    private $rateLimiter;
 
     public function __construct()
     {
         $this->chatModel = new ChatModel();
         $this->userModel = new UserModel();
-        $this->rateLimiter = new RateLimiter();
     }
 
     public function index()
@@ -31,13 +28,6 @@ class ChatController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $userId = $_SESSION['user_id'];
-
-            // Check rate limit
-            if (!$this->rateLimiter->check($userId)) {
-                header('Content-Type: application/json');
-                echo json_encode(['success' => false, 'error' => 'Rate limit exceeded. Please try again later.']);
-                exit;
-            }
 
             $user = $this->userModel->getUser($userId);
 
