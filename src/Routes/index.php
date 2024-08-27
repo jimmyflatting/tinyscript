@@ -5,6 +5,7 @@ use App\Controllers\AppController;
 use App\Controllers\AuthController;
 use App\Controllers\StripeController;
 use App\Controllers\UserController;
+use App\Controllers\ChatController;
 use App\Middleware\AuthMiddleware;
 use App\Router;
 
@@ -30,5 +31,16 @@ $router->get('/app/settings', UserController::class, 'settings', [AuthMiddleware
 $router->post('/app/update-profile', UserController::class, 'updateProfile', [AuthMiddleware::class, 'isAuthenticated']);
 $router->post('/app/change-password', UserController::class, 'changePassword', [AuthMiddleware::class, 'isAuthenticated']);
 $router->post('/app/cancel-subscription', UserController::class, 'cancelSubscription', [AuthMiddleware::class, 'isAuthenticated']);
+
+// Token purchase route
+$router->post('/app/purchase-tokens', StripeController::class, 'createTokenPurchaseSession', [AuthMiddleware::class, 'isAuthenticated']);
+
+// Chat routes (protected)
+$router->get('/chat', ChatController::class, 'index', [AuthMiddleware::class, 'isAuthenticated']);
+$router->get('/chat/create', ChatController::class, 'create', [AuthMiddleware::class, 'isAuthenticated']);
+$router->post('/chat/create', ChatController::class, 'create', [AuthMiddleware::class, 'isAuthenticated']);
+$router->get('/chat/view/:id', ChatController::class, 'view', [AuthMiddleware::class, 'isAuthenticated']);
+$router->post('/chat/update/:id', ChatController::class, 'update', [AuthMiddleware::class, 'isAuthenticated']);
+$router->post('/chat/delete/:id', ChatController::class, 'delete', [AuthMiddleware::class, 'isAuthenticated']);
 
 $router->dispatch();

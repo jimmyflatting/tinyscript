@@ -23,8 +23,9 @@ class UserModel
         name VARCHAR(255) NOT NULL,
         email VARCHAR(255) UNIQUE NOT NULL,
         password VARCHAR(255) NOT NULL,
-        active_subscription BOOLEAN DEFAULT 0,
-        subscription_date DATE,
+        subscription_status ENUM('active', 'inactive', 'trial') DEFAULT 'inactive',
+        tokens_available INT DEFAULT 0,
+        subscription_start_date DATE,
         subscription_end_date DATE,
         stripe_subscription_id VARCHAR(255)
     )";
@@ -39,7 +40,7 @@ class UserModel
     public function createUser($name, $email, $password)
     {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $query = "INSERT INTO users (name, email, password) VALUES (:name, :email, :password)";
+        $query = "INSERT INTO users (name, email, password, subscription_status, tokens_available) VALUES (:name, :email, :password, 'trial', 1000)";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':email', $email);
@@ -47,15 +48,18 @@ class UserModel
         return $stmt->execute();
     }
 
-    public function updateSubscription($userId, $active, $startDate, $endDate, $subscriptionId)
+    public function updateSubscription($userId, $status, $tokens, $startDate, $endDate, $subscriptionId)
     {
-        $query = "UPDATE users SET active_subscription = :active, 
-              subscription_date = :start_date, 
+        $query = "UPDATE users SET 
+              subscription_status = :status, 
+              tokens_available = :tokens,
+              subscription_start_date = :start_date, 
               subscription_end_date = :end_date,
               stripe_subscription_id = :subscription_id 
               WHERE id = :id";
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':active', $active, PDO::PARAM_BOOL);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':tokens', $tokens, PDO::PARAM_INT);
         $stmt->bindParam(':start_date', $startDate);
         $stmt->bindParam(':end_date', $endDate);
         $stmt->bindParam(':subscription_id', $subscriptionId);
@@ -137,5 +141,23 @@ class UserModel
         $stmt = $this->db->prepare("SELECT * FROM users WHERE id = ?");
         $stmt->execute([$userId]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function deductTokens($userId, $amount)
+    {
+        $query = "UPDATE users SET tokens_available = tokens_available - :amount WHERE id = :id AND tokens_available >= :amount";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':amount', $amount, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public function addTokens($userId, $amount)
+    {
+        $query = "UPDATE users SET tokens_available = tokens_available + :amount WHERE id = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':amount', $amount, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+        return $stmt->execute();
     }
 }

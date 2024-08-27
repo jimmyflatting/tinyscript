@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="./css/app.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 
 <body>
@@ -20,8 +21,24 @@
         <li><a href="#" class="active" data-section="chat"><i class="fas fa-comment"></i> Chat</a></li>
         <li><a href="#" data-section="settings"><i class="fas fa-cog"></i> Settings</a></li>
       </ul>
+      <!-- Add this inside the sidebar, just below the nav-links -->
+      <?php if ($user['subscription_status'] === 'trial'): ?>
+        <div class="token-display">
+          <i class="fas fa-coins"></i>
+          <span id="token-count"><?php echo $user['tokens_available']; ?></span> tokens
+        </div>
+      <?php else: ?>
+        <div class="subscription-status">
+          <i class="fas fa-check-circle"></i>
+          Active Subscription
+        </div>
+      <?php endif; ?>
     </nav>
     <main class="content">
+      <div class="token-balance">
+        <i class="fas fa-coins"></i>
+        <span id="token-count"><?php echo $user['tokens_available']; ?></span> tokens available
+      </div>
       <section id="chat" class="active">
         <div class="chat-container">
           <div class="chat-messages"></div>
@@ -53,7 +70,7 @@
             </form>
           </div>
 
-          <?php if (!$user['active_subscription']): ?>
+          <?php if ($user['subscription_status'] === 'trial'): ?>
             <div class="card subscription-settings">
               <h3>Upgrade to Pro</h3>
               <p>Unlock unlimited access with a Pro subscription!</p>
@@ -94,6 +111,13 @@
               </form>
             </div>
           <?php endif; ?>
+          <!-- Add this inside the settings section -->
+          <div class="card token-management">
+            <h3>Token Management</h3>
+            <p>You have <span id="token-count-settings"><?php echo $user['tokens_available']; ?></span> tokens available.</p>
+            <p>Tokens are used for each message sent to the AI. When you run out of tokens, you'll need to upgrade your subscription or purchase more tokens.</p>
+            <button id="buy-tokens" class="primary-btn">Buy More Tokens</button>
+          </div>
         </div>
       </section>
       <section id="billing">
