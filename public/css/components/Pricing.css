@@ -2,6 +2,12 @@
   .popular {
     border: solid var(--primary) 1px;
   }
+  .info {
+    display: flex;
+    .info-content {
+      font-size: 12px;
+    }
+  }
   .card {
     display: flex;
     flex-direction: column;

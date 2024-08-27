@@ -42,7 +42,6 @@
       </section>
 
       <section id="settings">
-        <h2>Settings</h2>
         <div class="settings-container">
           <div class="card account-settings">
             <h3>Account Settings</h3>
@@ -70,27 +69,18 @@
               <div class="subscription-options">
                 <div class="subscription-card">
                   <h4>Monthly</h4>
-                  <p class="price">$10<span>/month</span></p>
-                  <ul>
-                    <li>Full access to all features</li>
-                    <li>Unlimited chat history</li>
-                  </ul>
+                  <p class="price">$20<span>/month</span></p>
                   <form method="POST" action="/app/create-checkout-session">
                     <input type="hidden" name="price_id" value="price_1PrjsIGq5NXltWyk0fLJlUR2">
-                    <button type="submit" class="primary-btn">Subscribe Monthly</button>
+                    <button type="submit" class="primary-btn">Subscribe</button>
                   </form>
                 </div>
                 <div class="subscription-card popular">
                   <h4>Yearly</h4>
                   <p class="price">$100<span>/year</span></p>
-                  <ul>
-                    <li>Full access to all features</li>
-                    <li>Unlimited chat history</li>
-                    <li>Two months free</li>
-                  </ul>
                   <form method="POST" action="/app/create-checkout-session">
                     <input type="hidden" name="price_id" value="price_1PrjsIGq5NXltWyklZBGeHCR">
-                    <button type="submit" class="primary-btn">Subscribe Yearly</button>
+                    <button type="submit" class="primary-btn">Subscribe</button>
                   </form>
                 </div>
               </div>

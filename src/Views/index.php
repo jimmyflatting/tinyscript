@@ -97,16 +97,10 @@
                 <div class="cards">
                     <div class="card">
                         <div class="heading">
+                            <h2>Pro Plan</h2>
                             <h3>Monthly</h3>
-                            <h2>$10<span>/monthly</span></h2>
+                            <h2>$20<span>/monthly</span></h2>
                             <p>Perfect for trying out TinyScript without a long-term commitment.</p>
-                        </div>
-                        <div class="body">
-                            <ul>
-                                <li>Full access to all features</li>
-                                <li>Unlimited chat history</li>
-
-                            </ul>
                         </div>
                         <div class="footer">
                             <form method="POST" action="/app/create-checkout-session">
@@ -117,19 +111,10 @@
                     </div>
                     <div class="card popular">
                         <div class="heading">
-                            <div class="flex">
-                                <h3>Yearly</h3>
-                                <h4>Most popular</h4>
-                            </div>
+                            <h2>Pro Plan (6+ months free)</h2>
+                            <h3>Yearly</h3>
                             <h2>$100<span>/yearly</span></h2>
                             <p>Best value for committed developers looking to save in the long run.</p>
-                        </div>
-                        <div class="body">
-                            <ul>
-                                <li>Full access to all features</li>
-                                <li>Unlimited chat history</li>
-                                <li>Two months free</li>
-                            </ul>
                         </div>
                         <div class="footer">
                             <form method="POST" action="/app/create-checkout-session">
