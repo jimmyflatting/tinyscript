@@ -14,39 +14,25 @@ class UserModel
     {
         $this->db = Database::getInstance()->getConnection();
         $this->createTable();
-        $this->alterTable();
     }
 
     private function createTable()
     {
         $query = "CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        email TEXT UNIQUE NOT NULL,
-        password TEXT NOT NULL,
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password VARCHAR(255) NOT NULL,
         active_subscription BOOLEAN DEFAULT 0,
-        subscription_date TEXT,
-        subscription_end_date TEXT
+        subscription_date DATE,
+        subscription_end_date DATE,
+        stripe_subscription_id VARCHAR(255)
     )";
 
         try {
             $this->db->exec($query);
         } catch (PDOException $e) {
             die("Table creation failed: " . $e->getMessage());
-        }
-    }
-
-    private function alterTable()
-    {
-        $query = "ALTER TABLE users ADD COLUMN password TEXT";
-
-        try {
-            $this->db->exec($query);
-        } catch (PDOException $e) {
-            // If the column already exists, it will throw an error, which we can ignore
-            if (strpos($e->getMessage(), 'duplicate column name') === false) {
-                die("Table alteration failed: " . $e->getMessage());
-            }
         }
     }
 
