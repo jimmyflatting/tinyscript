@@ -50,6 +50,13 @@ class ChatModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getChat($chatId)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM chats WHERE id = ?");
+        $stmt->execute([$chatId]);
+        return $stmt->fetch();
+    }
+
     public function updateChat($chatId, $messages)
     {
         $query = "UPDATE chats SET messages = :messages WHERE id = :id";
