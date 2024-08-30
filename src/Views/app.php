@@ -27,7 +27,7 @@
       <section id="chat" class="block">
         <div class="flex flex-col h-[80vh]">
           <div class="flex-grow overflow-y-auto p-5 flex flex-col chat-messages"></div>
-          <div id="subscription-popup" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+          <div id="subscription-popup" class="<?= $user['subscription_status'] === 0 && $user['available_tokens'] <= 0 ? 'flex' : 'hidden'; ?> justify-center items-center bg-black bg-opacity-50">
             <div class="bg-card rounded-[0.5rem] p-8 text-text flex flex-col gap-4">
               <h3 class="text-[22px] font-bold">Out of Tokens</h3>
               <p>You've used all your available tokens. Upgrade to a Pro subscription for unlimited access!</p>
