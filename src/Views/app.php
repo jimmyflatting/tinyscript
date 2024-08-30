@@ -27,13 +27,19 @@
       <section id="chat" class="block">
         <div class="flex flex-col h-[80vh]">
           <div class="flex-grow overflow-y-auto p-5 flex flex-col chat-messages"></div>
-          <div id="subscription-popup" class="<?= $user['subscription_status'] === 0 && $user['available_tokens'] <= 0 ? 'flex' : 'hidden'; ?> justify-center items-center bg-black bg-opacity-50">
-            <div class="bg-card rounded-[0.5rem] p-8 text-text flex flex-col gap-4">
-              <h3 class="text-[22px] font-bold">Out of Tokens</h3>
-              <p>You've used all your available tokens. Upgrade to a Pro subscription for unlimited access!</p>
-              <button id="upgrade-btn" class="bg-primary text-background border-none rounded-[0.5rem] py-2.5 px-5 cursor-pointer transition-opacity duration-300 hover:opacity-90">Upgrade Now</button>
+
+          <?php if ($user['subscription_status'] === 0 && $user['available_tokens'] <= 0): ?>
+            <!-- Out of tokens popup -->
+            <div class="flex justify-center items-center bg-black bg-opacity-50">
+              <div class="bg-card rounded-[0.5rem] p-8 text-text flex flex-col gap-4">
+                <h3 class="text-[22px] font-bold">Out of Tokens</h3>
+                <p>You've used all your available tokens. Upgrade to a Pro subscription for unlimited access!</p>
+                <button id="upgrade-btn" class="bg-primary text-background border-none rounded-[0.5rem] py-2.5 px-5 cursor-pointer transition-opacity duration-300 hover:opacity-90">Upgrade Now</button>
+              </div>
             </div>
-          </div>
+          <?php endif; ?>
+
+          <!-- Chat input -->
           <div class="flex mt-5 chat-input">
             <input type="hidden" id="user-id" value="<?php echo $user['id']; ?>">
             <input type="hidden" id="chat-id" value="0">
