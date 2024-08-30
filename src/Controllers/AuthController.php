@@ -3,58 +3,117 @@
 namespace App\Controllers;
 
 use App\Controller;
-use App\Models\UserModel;
+use App\Config;
+use Google_Client;
+use App\Models\User;
+use Exception;
 
 class AuthController extends Controller
 {
-    private $userModel;
-
-    public function __construct()
-    {
-        $this->userModel = new UserModel();
-    }
-
     public function login()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['email'] ?? '';
-            $password = $_POST['password'] ?? '';
+        $input = json_decode(file_get_contents('php://input'), true);
+        $idToken = $input['id_token'] ?? null;
 
-            if ($this->userModel->authenticate($email, $password)) {
-                $_SESSION['user_id'] = $this->userModel->getUserIdByEmail($email);
-                header('Location: /app');
-                exit;
-            } else {
-                $error = "Invalid credentials";
-            }
+        if (isset($idToken)) {
+            $result = $this->handleGoogleLogin($idToken);
+        } else {
+            $result = $this->handleEmailPasswordLogin();
         }
 
-        $this->render('login', ['error' => $error ?? null]);
+        header('Content-Type: application/json');
+        echo json_encode($result);
+        exit;
     }
 
-    public function register()
+    private function handleGoogleLogin(string $idToken)
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = $_POST['name'] ?? '';
-            $email = $_POST['email'] ?? '';
-            $password = $_POST['password'] ?? '';
+        $googleUser = $this->verifyGoogleToken($idToken);
 
-            if ($this->userModel->createUser($name, $email, $password)) {
-                $_SESSION['user_id'] = $this->userModel->getUserIdByEmail($email);
-                header('Location: /app');
-                exit;
-            } else {
-                $error = "Failed to create user";
-            }
+        if (!$googleUser) {
+            error_log("Failed to verify Google token");
+            return ['status' => 'error', 'message' => 'Invalid Google token'];
         }
 
-        $this->render('register', ['error' => $error ?? null]);
+        $userModel = new User();
+        $existingUser = $userModel->read($googleUser['email']);
+
+        if ($existingUser) {
+            $user = $existingUser;
+        } else {
+            $userId = $userModel->create(
+                $googleUser['email'],
+                $googleUser['name'],
+                $googleUser['sub'] // No password for Google-authenticated users
+            );
+            $user = $userModel->find($userId);
+        }
+
+        if (!$user) {
+            error_log("Failed to create or retrieve user");
+            return ['status' => 'error', 'message' => 'Failed to create or retrieve user'];
+        }
+
+        // Set session variables
+        $_SESSION['auth_token'] = $user['id'];
+
+        error_log("Login successful for user: " . $user['email']);
+        return ['status' => 'success', 'auth_token' => $_SESSION['auth_token']];
+    }
+
+    private function verifyGoogleToken(string $idToken)
+    {
+        $client = new Google_Client(['client_id' => $_ENV['GOOGLE_CLIENT_ID']]);
+        try {
+            $payload = $client->verifyIdToken($idToken);
+            return $payload ? [
+                'sub' => $payload['sub'],
+                'email' => $payload['email'],
+                'name' => $payload['name']
+            ] : null;
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+
+    private function handleEmailPasswordLogin()
+    {
+        if (!isset($_POST['email']) || !isset($_POST['password'])) {
+            return json_encode(['status' => 'error', 'message' => 'Email and password are required']);
+        }
+
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+
+        $userModel = new User();
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $userId = $userModel->create($email, '', $hashed_password);
+        $user = $userModel->find($userId);
+
+        if ($user) {
+            // User exists, verify password
+            if (!password_verify($password, $user['password'])) {
+                return json_encode(['status' => 'error', 'message' => 'Invalid email or password']);
+            }
+        } else {
+            // Create user if email not found
+            $user_id = time(); // Simple way to generate a unique ID
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            $userId = $userModel->create($email, '', $hashed_password);
+            $user = $userModel->find($userId);
+        }
+
+        $authToken = $user['id'];
+        $_SESSION['auth_token'] = $authToken;
+
+        return json_encode(['status' => 'success', 'auth_token' => $authToken]);
     }
 
     public function logout()
     {
         session_destroy();
-        header('Location: /');
+        header('Content-Type: application/json');
+        echo json_encode(['status' => 'success', 'message' => 'Logged out successfully']);
         exit;
     }
 }

@@ -16,6 +16,16 @@ class Router
     $this->addRoute('POST', $path, $controller, $action, $middleware);
   }
 
+  public function delete($path, $controller, $action, $middleware = null)
+  {
+    $this->addRoute('DELETE', $path, $controller, $action, $middleware);
+  }
+
+  public function put($path, $controller, $action, $middleware = null)
+  {
+    $this->addRoute('PUT', $path, $controller, $action, $middleware);
+  }
+
   private function addRoute($method, $path, $controller, $action, $middleware)
   {
     $this->routes[] = [
@@ -53,6 +63,6 @@ class Router
   private function render404()
   {
     http_response_code(404);
-    require __DIR__ . '/Views/404.php';
+    require __DIR__ . '/views/404.php';
   }
 }

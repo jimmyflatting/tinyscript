@@ -20,36 +20,45 @@ $(document).ready(function () {
   });
 
   function sendMessage() {
-    const message = $('.chat-input textarea').val().trim();
+    const message = document.querySelector('.chat-input textarea').value.trim();
+    const user_id = document.getElementById('user-id').value;
+    const chat_id = document.getElementById('chat-id').value;
     if (message) {
       addMessage('user', message);
-      $('.chat-input textarea').val('');
+      document.querySelector('.chat-input textarea').value = '';
 
-      $.ajax({
-        url: '/chat/create',
+      const formData = new FormData();
+      formData.append('message', message);
+      formData.append('user_id', user_id);
+      formData.append('chat_id', parseInt(chat_id));
+
+      fetch('/api/item', {
         method: 'POST',
-        data: { message: message },
-        success: function (response) {
-          if (response.success) {
-            addMessage('bot', response.response);
-            if (response.subscription_status === 'trial') {
-              updateTokenDisplay(response.tokens_available);
+        body: formData
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            addMessage('bot', data.response);
+            document.getElementById('chat-id').value = data.chat_id;
+            if (data.subscription_status === 'trial') {
+              updateTokenDisplay(data.tokens_available);
             }
           } else {
-            if (response.requireUpgrade) {
+            console.log(data);
+            if (data.requireUpgrade) {
               showUpgradePrompt();
             } else {
-              addMessage('bot', 'Error: ' + response.error);
+              addMessage('bot', `Error: ${data.error}`);
             }
           }
-        },
-        error: function (xhr, status, error) {
+        })
+        .catch(error => {
           console.error('Error:', error);
           addMessage('bot', 'Sorry, I encountered an error. Please try again.');
-        }
-      });
+        });
     }
-  }
+  };
 
   function addMessage(sender, content) {
     const messageElement = $('<div>')

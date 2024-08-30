@@ -6,8 +6,8 @@ class AuthMiddleware
 {
     public static function isAuthenticated()
     {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
+        if (!isset($_SESSION['auth_token'])) {
+            header('Location: /');
             exit;
         }
     }

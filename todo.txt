@@ -1,39 +1,5 @@
-TinyScript
+- fix $chat_id to int in AppController
+- implement AI
+- implement stripe
 
-- Tech stack:
-    - PHP
-    - CSS
-    - HTML
-    - JavaScript (jQuery)
-    - MySQL
-    - Stripe (Checkout)
-
-- Pages
-    - Landing Page (clean, modern, use cards)
-    - Auth page (sign in / sign up) (similar to Replicate)
-    - App (chat ui - similar to ChatGPT)
-    - Settings / billing (similar to ChatGPT, 2 tiers. Yearly and monthly)
-
-- User table:
-    - User id
-    - Email
-    - Hashed Password
-    - Subscription status (active, inactive, trial)
-    - Tokens available
-    - Subscription  dates
-    - Relation to chat history
-
-- Chat table:
-    - User id
-    - Chat id
-    - Full convo (json)
-
-- Features:
-    - Chat with streaming API to replicate Model
-    - Chat interface should support markdown and copy
-    - Trial signups get 1000 tokens before they have to subscribe
-
-- Structure:
-    - Follow a simple MVC architecture
-    - Most controllers should use a create, read, update, delete pattern
-    - Checkout is powered by Stripe
+- check login via email

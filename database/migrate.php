@@ -10,25 +10,31 @@ $dotenv->load();
 $db = Database::getInstance()->getConnection();
 
 try {
+    // Drop the existing users table if it exists
+    $db->exec("DROP TABLE IF EXISTS items");
+    $db->exec("DROP TABLE IF EXISTS users");
+
     // Create users table
-    $db->exec("CREATE TABLE IF NOT EXISTS users (
+    $db->exec("CREATE TABLE users (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
         email VARCHAR(255) UNIQUE NOT NULL,
-        password VARCHAR(255) NOT NULL,
-        subscription_status ENUM('trial', 'active', 'inactive') DEFAULT 'trial',
-        tokens_available INT DEFAULT 1000,
-        subscription_start_date DATE,
-        subscription_end_date DATE,
+        name VARCHAR(255) NOT NULL,
+        password VARCHAR(255),
+        available_tokens INT DEFAULT 1000,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        subscription_status BOOLEAN DEFAULT FALSE,
+        subscription_date TIMESTAMP NULL,
+        subscription_renewal TIMESTAMP NULL,
         stripe_subscription_id VARCHAR(255)
     )");
 
-    // Create chats table
-    $db->exec("CREATE TABLE IF NOT EXISTS chats (
+    // Create items table
+    $db->exec("CREATE TABLE items (
         id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT NOT NULL,
-        messages TEXT NOT NULL,
+        body JSON,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     )");
 
