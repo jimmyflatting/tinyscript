@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface ChatMessage {
-  id: string;
+  _id: string;
   name: string;
   createdAt: string;
   isUserMessage: boolean;
@@ -65,7 +65,7 @@ const Chat: React.FC = () => {
         setMessages((prevMessages) => [
           ...prevMessages,
           {
-            id: data.userMessageId,
+            _id: data.userMessageId,
             name: inputMessage,
             createdAt: new Date().toISOString(),
             isUserMessage: true,
@@ -88,7 +88,7 @@ const Chat: React.FC = () => {
         setMessages((prevMessages) => [
           ...prevMessages,
           {
-            id: data.aiMessageId,
+            _id: data.aiMessageId,
             name: aiResponse,
             createdAt: new Date().toISOString(),
             isUserMessage: false,
@@ -117,7 +117,7 @@ const Chat: React.FC = () => {
         {messages.length > 0 ? (
           messages.map((message) => (
             <div
-              key={message.id}
+              key={message._id}
               className={`flex ${
                 message.isUserMessage ? "justify-end" : "justify-start"
               }`}
