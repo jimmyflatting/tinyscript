@@ -17,13 +17,12 @@ const Chat: React.FC = () => {
   const [inputMessage, setInputMessage] = useState("");
   const [isWaiting, setIsWaiting] = useState(false);
   const [streamedResponse, setStreamedResponse] = useState("");
+  const [history, setHistory] = useState<ChatMessage[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (user) {
-      fetchChatHistory();
-    }
-  }, [user]);
+    fetchChatHistory();
+  }, [history]);
 
   useEffect(() => {
     scrollToBottom();
@@ -212,8 +211,8 @@ const Chat: React.FC = () => {
         <div className="bg-card rounded-lg p-6 text-center">
           <h3 className="text-xl font-semibold mb-2">Out of Messages</h3>
           <p className="mb-4">
-            You've used all your available messages. Upgrade to a Pro membership
-            for unlimited access!
+            You&apos;ve used all your available messages. Upgrade to a Pro
+            membership for unlimited access!
           </p>
           <button
             id="upgrade-btn"

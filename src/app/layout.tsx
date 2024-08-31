@@ -25,6 +25,8 @@ export default async function RootLayout({
   const fullUser = user
     ? {
         ...user,
+        createdAt: user.createdAt ?? new Date(),
+        updatedAt: user.updatedAt ?? new Date(),
       }
     : null;
 

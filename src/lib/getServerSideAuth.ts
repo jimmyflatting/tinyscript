@@ -19,6 +19,8 @@ export async function getServerSideAuth() {
         email: user.email,
         name: user.name,
         credits: user.credits,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
         subscriptionStatus: user.subscriptionStatus,
         subscriptionEndDate: user.subscriptionEndDate,
         stripeCustomerId: user.stripeCustomerId,

@@ -6,12 +6,12 @@ const Hero: React.FC = () => {
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="bg-card rounded-lg p-8 flex items-center">
           <div>
-            <h1 className="text-3xl font-bold mb-2">
-              Your AI-powered coding assistant for seamless development.
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+              We&apos;re changing the way you code
             </h1>
             <p className="text-lg mb-6">
-              From squashing bugs to building features—when you're in a bind,
-              TinyScript is here to help.
+              From squashing bugs to building features—when you&apos;re in a
+              bind, TinyScript is here to help.
             </p>
             <button className="inline-flex items-center px-4 py-2 bg-primary text-background rounded-lg hover:opacity-90 transition duration-300">
               <span>Get started for free</span>

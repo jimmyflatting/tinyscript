@@ -6,12 +6,12 @@ const Faq: React.FC = () => {
       <div className="container mx-auto">
         <div className="bg-card rounded-lg p-8 text-text">
           <div className="mb-8">
-            <h2 className="text-3xl font-bold text-primary mb-4">
-              Frequently Asked Questions
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              Frequently asked questions
             </h2>
             <p>
-              Here are some of our FAQs. If you have any other questions you'd
-              like answered please feel free to email us.
+              Here&apos;s a list of frequently asked questions. Can&apos;t find
+              what you&apos;re looking for?
             </p>
           </div>
           <div className="border-l border-primary pl-4 space-y-4">
@@ -20,10 +20,10 @@ const Faq: React.FC = () => {
                 What is TinyScript?
               </h3>
               <p>
-                TinyScript is an AI-powered coding assistant designed to help
-                developers write code more efficiently. Whether you're
-                debugging, building new features, or just need a second pair of
-                eyes.
+                TinyScript is an AI-powered coding assistant that helps you
+                write better code faster. It&apos;s like having a senior
+                developer sitting next to you, always ready to help with
+                suggestions, explanations, and code generation.
               </p>
             </div>
             <div>
@@ -31,9 +31,10 @@ const Faq: React.FC = () => {
                 How do I use TinyScript?
               </h3>
               <p>
-                Using TinyScript is simple! Just click on the "Try now" button
-                on the homepage, and you'll be redirected to the app. From
-                there, you can begin coding with the assistance of TinyScript.
+                Using TinyScript is simple! Just click on the &quot;Try
+                now&quot; button on the homepage, and you&apos;ll be redirected
+                to the app. From there, you can begin coding with the assistance
+                of TinyScript.
               </p>
             </div>
             <div>
