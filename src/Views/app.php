@@ -105,8 +105,7 @@
             <button type="submit" class="w-full border border-primary text-primary rounded-[0.5rem] py-2.5 px-5 cursor-pointer transition-opacity duration-300 hover:opacity-90">Logout</button>
           </form>
         </div>
-
-        <?php if (!$user['subscription_status'] === 0): ?>
+        <?php if ($user['subscription_status'] === 0): ?>
           <div class="bg-card rounded-[0.5rem] p-8 text-text">
             <h3 class="text-[22px] text-primary mb-4">Upgrade to Pro</h3>
             <p class="mb-4">Unlock unlimited access with a Pro subscription!</p>
@@ -114,7 +113,7 @@
             <div class="border-2 border-primary rounded-[0.5rem] p-4 text-center shadow-[0_0_10px_rgba(126,235,216,0.3)]">
               <h4 class="text-primary text-[22px] mb-2">Pro Membership</h4>
               <p class="text-[26px] font-bold mb-4">$5<span class="text-[14px] font-normal">/week</span></p>
-              <form method="POST" action="/app/create-checkout-session">
+              <form method="POST" action="/api/subscribe">
                 <input type="hidden" name="price_id" value="price_1PrjsIGq5NXltWyklZBGeHCR">
                 <button type="submit" class="bg-primary text-background border-none rounded-[0.5rem] py-2.5 px-5 cursor-pointer transition-opacity duration-300 hover:opacity-90">Subscribe</button>
               </form>
@@ -128,12 +127,10 @@
               <h3 class="text-[22px] text-primary">Pro Subscription</h3>
               <p>You are subscribed to the Pro plan.</p>
             </div>
-            <?php if ($user['subscription_status'] === 0): ?>
-              <form method="POST" action="/app/cancel-subscription">
-                <button type="submit" class="border border-primary text-primary rounded-[0.5rem] py-2.5 px-5 cursor-pointer transition-opacity duration-300 hover:opacity-90">Cancel Subscription</button>
-              </form>
-            <?php endif; ?>
 
+            <form method="POST" action="/api/cancel-subscription">
+              <button type="submit" class="border border-primary text-primary rounded-[0.5rem] py-2.5 px-5 cursor-pointer transition-opacity duration-300 hover:opacity-90">Cancel Subscription</button>
+            </form>
           </div>
         <?php endif; ?>
       </div>

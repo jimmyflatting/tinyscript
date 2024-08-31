@@ -14,25 +14,34 @@ class StripeController extends Controller
 
     public function __construct()
     {
-        Stripe::setApiKey('your_stripe_secret_key');
-        $this->user = $this->loadUser(); // Implement this method to load the user
+        if (!isset($_ENV['STRIPE_SECRET_KEY'])) {
+            throw new \Exception('Stripe secret key is not set');
+        }
+        \Stripe\Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
+        $this->user = $this->loadUser();
     }
 
     public function createSubscription()
     {
-        $user = $this->getCurrentUser(); // Implement this method to get the logged-in user
-        $priceId = $_POST['price_id']; // Get the selected price ID from the form
+        $user = $this->getCurrentUser();
+        if (!$user) {
+            error_log('User not authenticated');
+            http_response_code(401);
+            return json_encode(['error' => 'User not authenticated']);
+        }
+
+        $priceId = $_ENV['STRIPE_PRICE_ID'] ?? 'price_1PtlTWGq5NXltWykLWpwW3q9';
 
         try {
             if (!$user['stripe_customer_id']) {
-                $customer = Customer::create([
+                $customer = \Stripe\Customer::create([
                     'email' => $user['email'],
                 ]);
                 $user['stripe_customer_id'] = $customer->id;
                 (new User())->update($user['id'], ['stripe_customer_id' => $customer->id]);
             }
 
-            $subscription = Subscription::create([
+            $subscription = \Stripe\Subscription::create([
                 'customer' => $user['stripe_customer_id'],
                 'items' => [['price' => $priceId]],
                 'payment_behavior' => 'default_incomplete',
@@ -43,7 +52,12 @@ class StripeController extends Controller
                 'subscriptionId' => $subscription->id,
                 'clientSecret' => $subscription->latest_invoice->payment_intent->client_secret,
             ]);
+        } catch (\Stripe\Exception\AuthenticationException $e) {
+            error_log('Stripe authentication error: ' . $e->getMessage());
+            http_response_code(401);
+            return json_encode(['error' => 'Stripe authentication failed']);
         } catch (\Exception $e) {
+            error_log('Stripe error: ' . $e->getMessage());
             http_response_code(400);
             return json_encode(['error' => $e->getMessage()]);
         }
@@ -76,10 +90,9 @@ class StripeController extends Controller
     {
         if (isset($_SESSION['user_id'])) {
             $userId = $_SESSION['user_id'];
-            $userModel = new \App\Models\User();
-            $this->user = $userModel->find($userId);
-        } else {
-            $this->user = null;
+            $userModel = new User();
+            return $userModel->find($userId);
         }
+        return null;
     }
 }

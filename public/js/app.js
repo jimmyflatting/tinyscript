@@ -185,4 +185,29 @@ $(document).ready(function () {
     // Optionally, redirect to the pricing page:
     // window.location.href = '/pricing';
   }
+
+  function handleSubscription() {
+    fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('auth_token')
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            console.error('Subscription error:', data.error);
+            // Handle the error (e.g., show an error message to the user)
+        } else {
+            // Handle successful subscription
+            console.log('Subscription created:', data);
+            // Redirect to Stripe Checkout or handle the clientSecret
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Handle network errors
+    });
+  }
 });

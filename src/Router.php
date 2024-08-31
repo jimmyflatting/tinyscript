@@ -49,7 +49,8 @@ class Router
           $middlewareMethod = $route['middleware'][1];
           $middlewareClass::$middlewareMethod();
         }
-        $controller = new $route['controller']();
+        $controllerClass = $route['controller'];
+        $controller = new $controllerClass();
         $action = $route['action'];
         $controller->$action();
         return;

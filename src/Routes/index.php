@@ -4,6 +4,8 @@ use App\Controllers\AppController;
 use App\Controllers\AuthController;
 use App\Controllers\RouteController;
 use App\Controllers\UserController;
+use App\Controllers\StripeController;
+use App\Controllers\StripeWebhookController;
 use App\Middleware\AuthMiddleware;
 use App\Router;
 
@@ -29,6 +31,11 @@ $router->delete('/api/user', UserController::class, 'delete', [AuthMiddleware::c
 $router->post('/api/item', AppController::class, 'create', [AuthMiddleware::class, 'isAuthenticated']);
 $router->get('/api/item', AppController::class, 'read', [AuthMiddleware::class, 'isAuthenticated']);
 $router->delete('/api/item', AppController::class, 'delete', [AuthMiddleware::class, 'isAuthenticated']);
+
+// Stripe routes
+$router->post('/api/subscribe', StripeController::class, 'createSubscription', [AuthMiddleware::class, 'isAuthenticated']);
+$router->post('/api/cancel-subscription', StripeController::class, 'cancelSubscription', [AuthMiddleware::class, 'isAuthenticated']);
+$router->post('/api/webhook', StripeWebhookController::class, 'handleWebhook');
 
 // dispatch
 $router->dispatch();
