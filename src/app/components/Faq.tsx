@@ -2,11 +2,11 @@ import React from "react";
 
 const Faq: React.FC = () => {
   return (
-    <section id="faq" className="py-16">
+    <section id="faq">
       <div className="container mx-auto">
         <div className="bg-card rounded-lg p-8 text-text">
           <div className="mb-8">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
               Frequently asked questions
             </h2>
             <p>

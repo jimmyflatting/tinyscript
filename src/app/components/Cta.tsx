@@ -1,8 +1,12 @@
+"use client";
+
+import { useAuth } from "@/contexts/AuthContext";
 import React from "react";
 
 const Cta: React.FC = () => {
+  const { openLoginModal } = useAuth();
   return (
-    <section className="py-16">
+    <section>
       <div className="container mx-auto">
         <div className="bg-card rounded-lg p-8 text-center">
           <h2 className="text-3xl font-bold mb-2">
@@ -11,12 +15,12 @@ const Cta: React.FC = () => {
           <p className="italic mb-8">
             Sign up today and elevate your development skills with TinyScript.
           </p>
-          <a
+          <button
             className="inline-block px-4 py-2 bg-primary text-background rounded-lg hover:opacity-90 transition duration-300"
-            href="/register"
+            onClick={openLoginModal}
           >
             Try for free
-          </a>
+          </button>
         </div>
       </div>
     </section>

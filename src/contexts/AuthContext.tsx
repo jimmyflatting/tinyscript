@@ -2,12 +2,14 @@
 
 import React, { createContext, useState, useContext } from "react";
 import { User } from "@prisma/client";
+import LoginModal from "@/app/components/LoginModal";
 
 type AuthContextType = {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
   auth: string;
   setAuth: (auth: string, user?: User | null) => void;
+  openLoginModal: () => void;
   // ... other properties
 };
 
@@ -26,6 +28,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
 }) => {
   const [auth, setAuth] = useState<string>(initialAuth);
   const [user, setUser] = useState<User | null>(initialUser);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  const openLoginModal = () => setIsLoginModalOpen(true);
 
   const setAuthAndUser = (newAuth: string, newUser?: User | null) => {
     setAuth(newAuth);
@@ -34,9 +39,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
 
   return (
     <AuthContext.Provider
-      value={{ auth, user, setAuth: setAuthAndUser, setUser }}
+      value={{ auth, user, setAuth: setAuthAndUser, setUser, openLoginModal }}
     >
       {children}
+      {isLoginModalOpen && (
+        <LoginModal onClose={() => setIsLoginModalOpen(false)} />
+      )}
     </AuthContext.Provider>
   );
 };

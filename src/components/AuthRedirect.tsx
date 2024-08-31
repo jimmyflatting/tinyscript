@@ -9,7 +9,10 @@ export function AuthRedirect() {
   const { auth } = useAuth();
 
   useEffect(() => {
-    if (auth === "authenticated" && window.location.pathname === "/") {
+    if (auth === "no-auth" && window.location.pathname === "/app") {
+      router.push("/");
+      console.log("no-auth");
+    } else {
       router.push("/app");
     }
   }, [auth, router]);

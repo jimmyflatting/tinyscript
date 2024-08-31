@@ -17,7 +17,7 @@ function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   };
 
   const handleSubscribe = async () => {
-    await fetch("/api/checkout-sessions", {
+    await fetch("/api/checkout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
