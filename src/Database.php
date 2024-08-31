@@ -116,9 +116,27 @@ class Database
 
     public function fetchAll($table, $condition)
     {
-        $sql = "SELECT * FROM $table WHERE $condition";
+        $sql = "SELECT * FROM $table";
+        $params = [];
+
+        if (!empty($condition)) {
+            $sql .= " WHERE ";
+            if (is_array($condition)) {
+                $whereClauses = [];
+                foreach ($condition as $key => $value) {
+                    $whereClauses[] = "$key = :$key";
+                    $params[":$key"] = $value;
+                }
+                $sql .= implode(' AND ', $whereClauses);
+            } else {
+                $sql .= $condition;
+            }
+        }
+
+        $sql .= " ORDER BY updated_at DESC LIMIT 10";
+
         $stmt = $this->connection->prepare($sql);
-        $stmt->execute();
+        $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

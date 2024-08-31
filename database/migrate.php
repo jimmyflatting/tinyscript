@@ -20,12 +20,13 @@ try {
         email VARCHAR(255) UNIQUE NOT NULL,
         name VARCHAR(255) NOT NULL,
         password VARCHAR(255),
-        available_tokens INT DEFAULT 1000,
+        available_tokens INT DEFAULT 5,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         subscription_status BOOLEAN DEFAULT FALSE,
         subscription_date TIMESTAMP NULL,
         subscription_renewal TIMESTAMP NULL,
-        stripe_subscription_id VARCHAR(255)
+        stripe_subscription_id VARCHAR(255),
+        stripe_customer_id VARCHAR(255)
     )");
 
     // Create items table

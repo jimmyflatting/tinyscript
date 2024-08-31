@@ -34,7 +34,7 @@ class User extends Model
             'email' => $email,
             'name' => $name,
             'password' => $password,
-            'available_tokens' => 1000,
+            'available_tokens' => 5,
             'subscription_status' => false,
             'subscription_date' => null,
             'subscription_renewal' => null,
@@ -79,5 +79,16 @@ class User extends Model
         $condition = "user_id = " . $user_id;
         $user = $this->db->fetch('users', $condition);
         return $user['available_tokens'] ?? 0;
+    }
+
+    public function findByStripeCustomerId($stripeCustomerId)
+    {
+        return $this->where('stripe_customer_id', $stripeCustomerId);
+    }
+
+    public function where($column, $value)
+    {
+        $condition = "$column = ?";
+        return $this->db->fetch('users', $condition, [$value]);
     }
 }

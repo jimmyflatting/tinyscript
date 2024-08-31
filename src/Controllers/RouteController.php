@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controller;
 use App\Models\User;
+use App\Models\Item;
 
 class RouteController extends Controller
 {
@@ -17,6 +18,10 @@ class RouteController extends Controller
     {
         $userModel = new User();
         $user = $userModel->find($_SESSION['auth_token']);
-        $this->render('app', ['user' => $user]);
+
+        $itemModel = new Item();
+        $chats = $itemModel->read_all($user['id']);
+
+        $this->render('app', ['user' => $user, 'chats' => $chats]);
     }
 }

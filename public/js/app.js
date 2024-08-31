@@ -1,3 +1,46 @@
+function newChat() {
+  console.log("Creating new chat");
+  // Clear existing messages
+  $('.chat-messages').empty();
+  
+  // Update the chat ID in the hidden input
+  $('#chat-id').val('0');
+}
+
+function loadChat(chat_id) {
+  console.log("Loading chat:", chat_id);
+  
+  // Clear existing messages
+  $('.chat-messages').empty();
+  
+  // Update the chat ID in the hidden input
+  $('#chat-id').val(chat_id);
+
+  // Fetch chat data from the server
+  fetch(`/api/item/${chat_id}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log("Chat data:", data);
+      
+      // Update chat messages
+      data.body.forEach(message => {
+        if (message.user) {
+          addMessage('user', message.user);
+        }
+        if (message.ai) {
+          addMessage('ai', message.ai);
+        }
+      });
+
+      // Scroll to the bottom of the chat
+      const chatMessages = document.querySelector('.chat-messages');
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    })
+    .catch(error => {
+      console.error("Error loading chat:", error);
+    });
+}
+
 $(document).ready(function () {
   // Navigation
   $('.nav-links a').on('click', function (e) {
@@ -21,16 +64,26 @@ $(document).ready(function () {
 
   function sendMessage() {
     const message = document.querySelector('.chat-input textarea').value.trim();
+    const message_element = document.querySelector('.chat-input textarea');
     const user_id = document.getElementById('user-id').value;
-    const chat_id = document.getElementById('chat-id').value;
+    let chat_id = document.getElementById('chat-id').value;
+    const send_btn = document.getElementById('send-btn');
+    
+    send_btn.disabled = true;
+    message_element.disabled = true;
+    
     if (message) {
       addMessage('user', message);
-      document.querySelector('.chat-input textarea').value = '';
+      message_element.value = '';
+      
+      console.log(typeof(chat_id));
+      chat_id = parseInt(chat_id);
+      console.log(typeof(chat_id));
 
       const formData = new FormData();
       formData.append('message', message);
       formData.append('user_id', user_id);
-      formData.append('chat_id', parseInt(chat_id));
+      formData.append('chat_id', chat_id);
 
       fetch('/api/item', {
         method: 'POST',
@@ -38,8 +91,10 @@ $(document).ready(function () {
       })
         .then(response => response.json())
         .then(data => {
-          if (data.success) {
-            addMessage('bot', data.response);
+          if (data.status) {
+            console.log(data);
+            addMessage('bot', data.latest_response);
+            console.log(data.chat_id);
             document.getElementById('chat-id').value = data.chat_id;
             if (data.subscription_status === 'trial') {
               updateTokenDisplay(data.tokens_available);
@@ -52,6 +107,11 @@ $(document).ready(function () {
               addMessage('bot', `Error: ${data.error}`);
             }
           }
+        }).finally(() => {
+          send_btn.disabled = false;
+          message_element.disabled = false;
+          // add back focus to the message element
+          message_element.focus();
         })
         .catch(error => {
           console.error('Error:', error);

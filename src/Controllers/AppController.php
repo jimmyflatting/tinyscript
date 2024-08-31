@@ -4,9 +4,16 @@ namespace App\Controllers;
 
 use App\Controller;
 use App\Models\Item;
+use App\Models\User;
+use Stripe\Stripe;
+use Stripe\Checkout\Session;
 
 class AppController extends Controller
 {
+    public function __construct()
+    {
+        Stripe::setApiKey('your_stripe_secret_key');
+    }
 
     public function create()
     {
@@ -51,6 +58,12 @@ class AppController extends Controller
 
         // Save the updated conversation
         $itemModel->update($item['id'], json_encode($item['body']));
+
+        // Update the user's available tokens
+        // $userModel = new User();
+        // $user = $userModel->find($user_id);
+        // $user['available_tokens'] -= 1;
+        // $userModel->update($user_id, $user);
 
         $response = [
             'status' => true,
@@ -102,5 +115,89 @@ class AppController extends Controller
             'message' => 'Chat completed',
             'data' => $random_response[array_rand($random_response)]
         ];
+    }
+
+    public function subscribe()
+    {
+        $user_id = $_POST['user_id'] ?? null;
+
+        if (!$user_id) {
+            echo json_encode([
+                'status' => false,
+                'message' => 'User ID is required',
+            ]);
+            exit;
+        }
+
+        $session = Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => [[
+                'price' => 'your_stripe_price_id',
+                'quantity' => 1,
+            ]],
+            'mode' => 'subscription',
+            'success_url' => 'http://yourdomain.com/subscription-success?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => 'http://yourdomain.com/subscription-cancel',
+        ]);
+
+        echo json_encode([
+            'status' => true,
+            'session_id' => $session->id,
+        ]);
+        exit;
+    }
+
+    public function subscriptionSuccess()
+    {
+        $session_id = $_GET['session_id'] ?? null;
+
+        if (!$session_id) {
+            // Redirect to home with error toast
+            header('Location: /?error=Invalid session');
+            exit;
+        }
+
+        $session = Session::retrieve($session_id);
+        $user_id = $session->client_reference_id;
+
+        $userModel = new User();
+        $user = $userModel->find($user_id);
+        $user['active'] = 1;
+        $userModel->update($user_id, $user);
+
+        // Redirect to home with success toast
+        header('Location: /?success=Subscription successful');
+        exit;
+    }
+
+    public function cancelSubscription()
+    {
+        $user_id = $_POST['user_id'] ?? null;
+
+        if (!$user_id) {
+            echo json_encode([
+                'status' => false,
+                'message' => 'User ID is required',
+            ]);
+            exit;
+        }
+
+        $userModel = new User();
+        $user = $userModel->find($user_id);
+
+        // Cancel the subscription in Stripe
+        $subscription = \Stripe\Subscription::retrieve($user['stripe_subscription_id']);
+        $subscription->cancel();
+
+        // Update user model
+        $user['active'] = 0;
+        $user['stripe_subscription_id'] = null;
+        $userModel->update($user_id, $user);
+
+        echo json_encode([
+            'status' => true,
+            'message' => 'Subscription cancelled successfully',
+        ]);
+        exit;
     }
 }

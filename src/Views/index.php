@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./css/styles.css">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="//unpkg.com/alpinejs" defer></script>
 </head>
 
 <body>
@@ -45,9 +44,7 @@
         data-callback="handleCredentialResponse"
         data-auto_prompt="false">
     </div>
-    <div x-data="{ 
-        showLoginModal: false,
-    }">
+    <div>
         <nav class="sticky top-0 z-10 py-1 border-b-2 border-card backdrop-blur-sm">
             <div class="container mx-auto flex justify-between items-center h-12">
                 <div class="flex items-center">
@@ -56,7 +53,7 @@
                     </a>
                 </div>
                 <div>
-                    <button @click.prevent="showLoginModal = true" class="px-4 py-2 bg-primary text-background rounded-lg hover:opacity-90 transition duration-300" href="/register">Login / Register</button>
+                    <button onClick="toggleLoginModal()" class="px-4 py-2 bg-primary text-background rounded-lg hover:opacity-90 transition duration-300">Login / Register</button>
                 </div>
             </div>
         </nav>
@@ -195,8 +192,8 @@
             </section>
 
             <!-- Login Modal -->
-            <div x-show="showLoginModal" class="fixed inset-0 bg-background bg-opacity-50 flex items-center justify-center z-50">
-                <div @click.away="showLoginModal = false" class="bg-background p-8 rounded-lg max-w-md w-full">
+            <div id="loginModal" class="hidden fixed inset-0 bg-background bg-opacity-50 flex items-center justify-center z-50">
+                <div class="bg-background p-8 rounded-lg max-w-md w-full">
                     <h2 class="text-2xl font-bold mb-6">Login / Register</h2>
                     <div class="space-y-6">
                         <!-- Google Sign In -->
@@ -242,7 +239,7 @@
                             </button>
                         </form>
                     </div>
-                    <button @click="showLoginModal = false" class="mt-6 text-text hover:text-primary">Close</button>
+                    <button onClick="toggleLoginModal()" class="mt-6 text-text hover:text-primary">Close</button>
                 </div>
             </div>
         </main>
@@ -259,6 +256,13 @@
             </section>
         </footer>
     </div>
+
+    <script>
+        function toggleLoginModal() {
+            const modal = document.getElementById('loginModal');
+            modal.classList.toggle('hidden');
+        }
+    </script>
 </body>
 
 </html>
