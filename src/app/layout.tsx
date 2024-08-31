@@ -6,8 +6,11 @@ import Navbar from "./components/Navbar";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { getServerSideAuth } from "@/lib/getServerSideAuth";
 import { AuthRedirect } from "@/components/AuthRedirect";
+import ReactGA from "react-ga4";
 
 const inter = Inter({ subsets: ["latin"] });
+
+ReactGA.initialize("G-0J51VNPXCB");
 
 export const metadata: Metadata = {
   title: "TinyScript",
