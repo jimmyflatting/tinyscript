@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
       console.error('Error message:', error.message);
       console.error('Error stack:', error.stack);
     }
-    return NextResponse.json({ error: 'Authentication failed' }, { status: 400 });
+    return NextResponse.json({ error: 'Authentication failed: ' + error }, { status: 400 });
   } finally {
     await prisma.$disconnect();
   }

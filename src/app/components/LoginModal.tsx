@@ -17,6 +17,7 @@ function LoginModal({ onClose }: LoginModalProps) {
       const { data: user } = await axios.post("/api/auth", {
         credential: credentialResponse.credential,
       });
+
       console.log("User:", user);
       sessionStorage.setItem("user", JSON.stringify(user));
       setAuth("authenticated", user); // Update auth state
