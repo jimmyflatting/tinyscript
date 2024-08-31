@@ -1,5 +1,0 @@
-- fix $chat_id to int in AppController
-- implement AI
-- implement stripe
-
-- check login via email
