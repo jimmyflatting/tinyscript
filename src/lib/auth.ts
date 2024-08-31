@@ -1,5 +1,5 @@
 import { OAuth2Client } from 'google-auth-library';
-import { prisma } from './prisma';
+import clientPromise from './mongodb';
 
 const client = new OAuth2Client(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
 
@@ -22,17 +22,19 @@ export async function verifyGoogleToken(token: string) {
     };
   } catch (error) {
     console.error('Error verifying Google token:', error);
-    throw error; // Throw the original error for better debugging
+    throw error;
   }
 }
 
 export async function getUserFromSessionToken(sessionToken: string | undefined) {
   if (!sessionToken) return null;
   
-  const session = await prisma.session.findUnique({
-    where: { token: sessionToken },
-    include: { user: true },
-  });
+  const client = await clientPromise;
+  const db = client.db();
+  
+  const session = await db.collection('sessions').findOne({ token: sessionToken });
+  if (!session) return null;
 
-  return session?.user || null;
+  const user = await db.collection('users').findOne({ _id: session.userId });
+  return user;
 }

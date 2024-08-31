@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import ReactGA from "react-ga4";
-import { prisma } from "@/lib/prisma";
+import clientPromise from "@/lib/mongodb";
+import { ObjectId } from 'mongodb';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
@@ -29,22 +30,16 @@ export async function POST(req: NextRequest) {
 
     if (session.id) {
       // update user's subscription status
-      const user = await prisma.user.findUnique({
-        where: {
-          id: user_id,
-        },
-      });
+      const client = await clientPromise;
+      const db = client.db();
+
+      const user = await db.collection('users').findOne({ _id: new ObjectId(user_id) });
 
       if (user) {
-        user.subscriptionStatus = "active";
-        await prisma.user.update({
-          where: {
-            id: user_id,
-          },
-          data: {
-            subscriptionStatus: "active",
-          },
-        });
+        await db.collection('users').updateOne(
+          { _id: new ObjectId(user_id) },
+          { $set: { subscriptionStatus: "active" } }
+        );
       }
       
       ReactGA.event({

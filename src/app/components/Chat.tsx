@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { User } from "@prisma/client";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface ChatMessage {
@@ -35,7 +34,7 @@ const Chat: React.FC = () => {
   const fetchChatHistory = async () => {
     if (!user) return;
     try {
-      const response = await fetch(`/api/app?userId=${user.id}`);
+      const response = await fetch(`/api/app?userId=${user._id}`);
       const data = await response.json();
       setMessages(data.chatHistory || []);
     } catch (error) {
@@ -55,7 +54,7 @@ const Chat: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId: user.id,
+          userId: user._id,
           message: inputMessage,
         }),
       });
@@ -113,7 +112,7 @@ const Chat: React.FC = () => {
   }
 
   return (
-    <section className="flex flex-col h-full max-w-3xl mx-auto px-4 py-8">
+    <section className="flex flex-col h-full w-full mx-auto px-4 py-8">
       <div className="flex-grow overflow-y-auto mb-6 space-y-4">
         {messages.length > 0 ? (
           messages.map((message) => (

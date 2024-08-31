@@ -1,8 +1,20 @@
 "use client";
 
 import React, { createContext, useState, useContext } from "react";
-import { User } from "@prisma/client";
 import LoginModal from "@/app/components/LoginModal";
+
+interface User {
+  _id: string;
+  email: string;
+  name: string;
+  credits: number;
+  subscriptionStatus: string;
+  createdAt: Date;
+  updatedAt: Date;
+  subscriptionEndDate?: Date;
+  stripeCustomerId?: string;
+  stripeSubscriptionId?: string;
+}
 
 type AuthContextType = {
   user: User | null;

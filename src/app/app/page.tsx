@@ -10,7 +10,7 @@ const Page: React.FC = () => {
     title: "App Page",
   });
   return (
-    <div className="flex bg-background text-text h-full container">
+    <div className="bg-background text-text h-full container">
       <Chat />
       <Toast />
     </div>

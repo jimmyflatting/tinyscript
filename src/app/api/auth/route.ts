@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyGoogleToken } from '@/lib/auth';
-import { PrismaClient } from '@prisma/client';
+import clientPromise from '@/lib/mongodb';
 import { cookies } from 'next/headers';
-
-const prisma = new PrismaClient();
+import { ObjectId } from 'mongodb';
 
 export async function POST(req: NextRequest) {
   const { credential } = await req.json();
@@ -15,28 +14,33 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'No email provided' }, { status: 400 });
     }
 
-    let user = await prisma.user.findUnique({ where: { email: googleUser.email } });
+    const client = await clientPromise;
+    const db = client.db();
+
+    let user = await db.collection('users').findOne({ email: googleUser.email });
 
     if (!user) {
-      user = await prisma.user.create({
-        data: {
-          email: googleUser.email,
-          name: googleUser.name ?? googleUser.email.split('@')[0],
-        },
+      const result = await db.collection('users').insertOne({
+        email: googleUser.email,
+        name: googleUser.name ?? googleUser.email.split('@')[0],
+        credits: 5,
+        subscriptionStatus: 'trial',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       });
+      user = await db.collection('users').findOne({ _id: result.insertedId });
     }
 
     const sessionToken = crypto.randomUUID();
-    await prisma.session.create({
-      data: {
-        token: sessionToken,
-        userId: user.id,
-      },
+    await db.collection('sessions').insertOne({
+      token: sessionToken,
+      userId: user?._id,
+      createdAt: new Date(),
     });
 
     cookies().set('session_token', sessionToken, { httpOnly: true, secure: true });
 
-    return NextResponse.json({ id: user.id, email: user.email, name: user.name });
+    return NextResponse.json({ id: user?._id, email: user?.email, name: user?.name });
   } catch (error) {
     console.error('Authentication error:', error);
     if (error instanceof Error) {
@@ -44,7 +48,5 @@ export async function POST(req: NextRequest) {
       console.error('Error stack:', error.stack);
     }
     return NextResponse.json({ error: 'Authentication failed: ' + error }, { status: 400 });
-  } finally {
-    await prisma.$disconnect();
   }
 }

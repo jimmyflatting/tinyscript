@@ -1,18 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import clientPromise from '@/lib/mongodb';
 
 export async function POST(req: NextRequest) {
   try {
     const sessionToken = cookies().get('session_token')?.value;
 
     if (sessionToken) {
+      const client = await clientPromise;
+      const db = client.db();
+
       // Delete the session from the database
-      await prisma.session.delete({
-        where: { token: sessionToken },
-      });
+      await db.collection('sessions').deleteOne({ token: sessionToken });
     }
 
     // Clear the session cookie
@@ -22,7 +21,5 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error('Logout error:', error);
     return NextResponse.json({ error: 'Logout failed' }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 }

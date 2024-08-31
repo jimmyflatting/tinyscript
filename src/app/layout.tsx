@@ -24,14 +24,8 @@ export default async function RootLayout({
 }) {
   const { auth, user } = await getServerSideAuth();
 
-  // Add this line before passing user to AuthProvider
-  const fullUser = user
-    ? {
-        ...user,
-        createdAt: user.createdAt ?? new Date(),
-        updatedAt: user.updatedAt ?? new Date(),
-      }
-    : null;
+  // MongoDB already provides _id, createdAt, and updatedAt fields
+  const fullUser = user ? { _id: user.id, ...user } : null;
 
   return (
     <html lang="en">

@@ -15,7 +15,7 @@ export async function getServerSideAuth() {
     return { 
       auth: "authenticated",
       user: {
-        id: user.id,
+        id: user._id.toString(),
         email: user.email,
         name: user.name,
         credits: user.credits,
