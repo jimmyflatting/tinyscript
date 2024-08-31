@@ -20,7 +20,16 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Create .env file
-        run: echo "${{ secrets.ENV_FILE }}" > .env
+        run: |
+          cat <<EOF > .env
+          DATABASE="mongodb+srv://jimmyflatting:LtCXZXsBYz1YXkEW@tinyscript.zm0j4.mongodb.net/?retryWrites=true&w=majority&appName=tinyscript"
+          REPLICATE_API_TOKEN="r8_OXegDY4kkkbaJXrRXDvmxfkrAXSYUTJ21rSTA"
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_test_51PqzyfGq5NXltWykwAxT7e6pq1YaEdKf7uyjNnI5r259tm34iv1imtThLDpEzTmNogrSPJQ3cZRm8X3o1OaCVazt004sof6eBi"
+          STRIPE_SECRET_KEY="sk_test_51PqzyfGq5NXltWykaX6tetM78TWNSYYUPPnh1d5eOzymrelgCRRoie5ifOA1e0B3CrMsjLLoCxbeJDUlJWQQ2MbA005Tad5Y7Y"
+          SYSTEM_PROMPT="You are a helpful assistant that can answer questions and help with tasks. You are a helpful assistant that can answer questions and help with tasks."
+          NEXT_PUBLIC_GOOGLE_CLIENT_ID="772670371516-3e9qpq3d0r9pm9tsndr6035qr2flak7q.apps.googleusercontent.com"
+          EOF
+        shell: bash
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
