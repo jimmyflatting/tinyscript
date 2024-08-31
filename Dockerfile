@@ -1,7 +1,7 @@
 # Dockerfile
 
 # Use an official Node.js image as the base
-FROM node:20
+FROM node:20-alpine
 
 # Set the working directory inside the Docker container
 WORKDIR /app
