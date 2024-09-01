@@ -41,6 +41,8 @@ const Navbar: React.FC = () => {
     }
   };
 
+  console.log(user);
+
   return (
     <>
       <nav className="sticky top-0 z-10 py-1 border-b-2 border-card backdrop-blur-sm">

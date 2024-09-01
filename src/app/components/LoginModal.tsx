@@ -14,7 +14,7 @@ function LoginModal({ onClose }: LoginModalProps) {
 
   const handleCredentialResponse = async (credentialResponse: any) => {
     try {
-      const { data: user } = await axios.post("/api/auth", {
+      const { data: user } = await axios.post("/api/auth/google", {
         credential: credentialResponse.credential,
       });
 

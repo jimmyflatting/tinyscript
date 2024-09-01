@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import CancelSubscription from "./CancelSubscription";
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -6,27 +8,14 @@ interface SettingsModalProps {
 }
 
 function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const { user } = useAuth();
+  const [name, setName] = useState(user?.name || "");
+  const [email, setEmail] = useState(user?.email || "");
   const [password, setPassword] = useState("");
-  const [isSubscribed, setIsSubscribed] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission
-  };
-
-  const handleSubscribe = async () => {
-    await fetch("/api/checkout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  };
-
-  const handleCancelSubscription = () => {
-    // Handle subscription cancellation
   };
 
   if (!isOpen) return null;
@@ -97,7 +86,7 @@ function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
               </button>
             </form>
           </div>
-          {!isSubscribed ? (
+          {user?.subscriptionStatus === "trial" ? (
             <div className="bg-card rounded-[0.5rem] p-8 text-text">
               <h3 className="text-[22px] text-primary mb-4">Upgrade to Pro</h3>
               <p className="mb-4">
@@ -111,12 +100,18 @@ function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                 <p className="text-[26px] font-bold mb-4">
                   $5<span className="text-[14px] font-normal">/week</span>
                 </p>
-                <button
-                  onClick={handleSubscribe}
-                  className="bg-primary text-background border-none rounded-[0.5rem] py-2.5 px-5 cursor-pointer transition-opacity duration-300 hover:opacity-90"
+                <form
+                  action="/api/checkout/create-checkout-session"
+                  method="POST"
                 >
-                  Subscribe
-                </button>
+                  <input type="hidden" name="userId" value={user?._id} />
+                  <button
+                    type="submit"
+                    className="bg-primary text-background border-none rounded-[0.5rem] py-2.5 px-5 cursor-pointer transition-opacity duration-300 hover:opacity-90"
+                  >
+                    Subscribe
+                  </button>
+                </form>
               </div>
             </div>
           ) : (
@@ -126,12 +121,7 @@ function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                 <p>You are subscribed to the Pro plan.</p>
               </div>
 
-              <button
-                onClick={handleCancelSubscription}
-                className="border border-primary text-primary rounded-[0.5rem] py-2.5 px-5 cursor-pointer transition-opacity duration-300 hover:opacity-90"
-              >
-                Cancel Subscription
-              </button>
+              <CancelSubscription />
             </div>
           )}
         </div>

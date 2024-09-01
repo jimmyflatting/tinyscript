@@ -14,6 +14,7 @@ interface User {
   subscriptionEndDate?: Date;
   stripeCustomerId?: string;
   stripeSubscriptionId?: string;
+  cancelAtPeriodEnd?: boolean;
 }
 
 type AuthContextType = {
