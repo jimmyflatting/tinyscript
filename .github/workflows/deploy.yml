@@ -50,7 +50,6 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           password: ${{ secrets.VPS_PASSWORD }}
           script: |
-            cd /home/jimmy/tinyscript
             docker pull ghcr.io/jimmyflatting/tinyscript:latest
             docker stop tinyscript
             docker rm tinyscript
