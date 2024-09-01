@@ -52,4 +52,6 @@ jobs:
           script: |
             cd /home/jimmy/tinyscript
             docker pull ghcr.io/jimmyflatting/tinyscript:latest
-            docker run -p 3000:3000 ghcr.io/jimmyflatting/tinyscript:latest
+            docker stop tinyscript
+            docker rm tinyscript
+            docker run -d -p 3000:3000 --name tinyscript ghcr.io/jimmyflatting/tinyscript:latest
