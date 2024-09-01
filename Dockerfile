@@ -68,4 +68,6 @@ ENV PORT=3000
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
 ENV HOSTNAME="0.0.0.0"
-CMD ["node", "server.js"]
+
+# Check if server.js exists, if not, use the default Next.js start command
+CMD ["sh", "-c", "if [ -f server.js ]; then node server.js; else npm run start; fi"]
