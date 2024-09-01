@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-
+import { useRouter } from "next/navigation";
 interface ChatMessage {
   _id: string;
   name: string;
@@ -10,7 +10,7 @@ interface ChatMessage {
   isUserMessage: boolean;
 }
 
-const Chat: React.FC = () => {
+export default function Chat() {
   const { user, setUser } = useAuth();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState("");
@@ -18,10 +18,7 @@ const Chat: React.FC = () => {
   const [streamedResponse, setStreamedResponse] = useState("");
   const [history, setHistory] = useState<ChatMessage[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    fetchChatHistory();
-  }, [history]);
+  const router = useRouter();
 
   useEffect(() => {
     scrollToBottom();
@@ -42,6 +39,10 @@ const Chat: React.FC = () => {
       setMessages([]);
     }
   };
+
+  useEffect(() => {
+    fetchChatHistory();
+  }, [history]);
 
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || !user || isWaiting) return;
@@ -106,9 +107,7 @@ const Chat: React.FC = () => {
   };
 
   if (!user) {
-    return (
-      <div className="flex items-center justify-center h-full">Loading...</div>
-    );
+    router.push("/");
   }
 
   return (
@@ -206,7 +205,7 @@ const Chat: React.FC = () => {
         <div ref={messagesEndRef} />
       </div>
 
-      {user.subscriptionStatus !== "active" && user.credits <= 0 ? (
+      {user?.subscriptionStatus !== "active" && (user?.credits ?? 0) <= 0 ? (
         <div className="bg-card rounded-lg p-6 text-center">
           <h3 className="text-xl font-semibold mb-2">Out of Messages</h3>
           <p className="mb-4">
@@ -253,6 +252,4 @@ const Chat: React.FC = () => {
       )}
     </section>
   );
-};
-
-export default Chat;
+}

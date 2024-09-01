@@ -1,9 +1,9 @@
 import React from "react";
-import Chat from "../components/Chat";
 import Toast from "../components/Toast";
 import ReactGA from "react-ga4";
+import Chat from "../components/Chat";
 
-const Page: React.FC = () => {
+const Page = async () => {
   ReactGA.send({
     hitType: "pageview",
     page: "/app",
