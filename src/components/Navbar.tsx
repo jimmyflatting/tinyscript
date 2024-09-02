@@ -1,10 +1,16 @@
 "use client";
 
-import { SignedIn, SignedOut, SignOutButton } from "@clerk/nextjs";
+import {
+  ClerkLoading,
+  SignedIn,
+  SignedOut,
+  SignOutButton,
+} from "@clerk/nextjs";
 import Link from "next/link";
 import React from "react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { Button } from "./ui/button";
 
 function Navbar() {
   const pathname = usePathname();
@@ -23,7 +29,7 @@ function Navbar() {
         Tiny<span className="font-bold">Script</span>
       </Link>
 
-      <nav className="ml-auto flex gap-4 sm:gap-6">
+      <nav className="ml-auto flex gap-4 sm:gap-6 items-center">
         <SignedOut>
           <Link
             href="/login"
@@ -37,7 +43,16 @@ function Navbar() {
           </Link>
         </SignedOut>
         <SignedIn>
-          <SignOutButton />
+          <ClerkLoading>
+            <p className="text-sm font-medium hover:underline underline-offset-4 hover:cursor-pointer">
+              Sign out
+            </p>
+          </ClerkLoading>
+          <SignOutButton redirectUrl="/">
+            <p className="text-sm font-medium hover:underline underline-offset-4 hover:cursor-pointer">
+              Sign out
+            </p>
+          </SignOutButton>
         </SignedIn>
         <SignedIn>
           <Link

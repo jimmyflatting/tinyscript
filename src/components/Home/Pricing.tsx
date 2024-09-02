@@ -1,6 +1,31 @@
 import React from "react";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
+import PriceCard from "../ui/PriceCard";
+
+const prices = [
+  {
+    title: "Starter",
+    price: "$19",
+    features: ["Up to 1.000 messages", "Base model"],
+    interval: "per month",
+    price_id: "price_1P5K13EzZvKYlo2C105Z0XjF",
+  },
+  {
+    title: "Plus",
+    price: "$29",
+    features: ["Up to 5.000 messages", "Plus model"],
+    interval: "per month",
+    price_id: "price_1P5K13EzZvKYlo2C105Z0XjF",
+  },
+  {
+    title: "Pro",
+    price: "$99",
+    features: ["Up to 10.000 messages", "Premium model"],
+    interval: "per month",
+    price_id: "price_1P5K13EzZvKYlo2C105Z0XjF",
+  },
+];
 
 function Pricing() {
   return (
@@ -18,72 +43,9 @@ function Pricing() {
           </div>
         </div>
         <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-12">
-          <Card className="flex flex-col space-y-4 rounded-xl border p-6">
-            <div className="space-y-2">
-              <h3 className="text-2xl font-bold">Starter</h3>
-              <p className="text-4xl font-bold">$9</p>
-              <p className="text-muted-foreground">per month</p>
-            </div>
-            <ul className="space-y-2 text-muted-foreground">
-              <li className="flex items-center gap-2">
-                {/* <CheckIcon className="h-4 w-4 text-green-500" /> */}
-                Up to 5 users
-              </li>
-              <li className="flex items-center gap-2">
-                {/* <CheckIcon className="h-4 w-4 text-green-500" /> */}
-                5GB storage
-              </li>
-              <li className="flex items-center gap-2">
-                {/* <CheckIcon className="h-4 w-4 text-green-500" /> */}
-                Basic features
-              </li>
-            </ul>
-            <Button className="mt-auto">Get Started</Button>
-          </Card>
-          <Card className="flex flex-col space-y-4 rounded-xl border p-6">
-            <div className="space-y-2">
-              <h3 className="text-2xl font-bold">Plus</h3>
-              <p className="text-4xl font-bold">$29</p>
-              <p className="text-muted-foreground">per month</p>
-            </div>
-            <ul className="space-y-2 text-muted-foreground">
-              <li className="flex items-center gap-2">
-                {/* <CheckIcon className="h-4 w-4 text-green-500" /> */}
-                Up to 25 users
-              </li>
-              <li className="flex items-center gap-2">
-                {/* <CheckIcon className="h-4 w-4 text-green-500" /> */}
-                50GB storage
-              </li>
-              <li className="flex items-center gap-2">
-                {/* <CheckIcon className="h-4 w-4 text-green-500" /> */}
-                Advanced features
-              </li>
-            </ul>
-            <Button className="mt-auto">Get Started</Button>
-          </Card>
-          <Card className="flex flex-col space-y-4 rounded-xl border p-6">
-            <div className="space-y-2">
-              <h3 className="text-2xl font-bold">Pro</h3>
-              <p className="text-4xl font-bold">$99</p>
-              <p className="text-muted-foreground">per month</p>
-            </div>
-            <ul className="space-y-2 text-muted-foreground">
-              <li className="flex items-center gap-2">
-                {/* <CheckIcon className="h-4 w-4 text-green-500" /> */}
-                Unlimited users
-              </li>
-              <li className="flex items-center gap-2">
-                {/* <CheckIcon className="h-4 w-4 text-green-500" /> */}
-                Unlimited storage
-              </li>
-              <li className="flex items-center gap-2">
-                {/* <CheckIcon className="h-4 w-4 text-green-500" /> */}
-                Enterprise-grade features
-              </li>
-            </ul>
-            <Button className="mt-auto">Get Started</Button>
-          </Card>
+          {prices.map((price) => (
+            <PriceCard key={price.title} {...price} />
+          ))}
         </div>
       </div>
     </section>

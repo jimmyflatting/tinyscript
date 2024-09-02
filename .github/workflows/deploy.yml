@@ -28,6 +28,8 @@ jobs:
           CLERK_SECRET_KEY="sk_test_vV4gXXxT3rEgLOwkKjyryCkKBph4HGgZtFye7PKfMG"
           NEXT_PUBLIC_CLERK_SIGN_IN_URL="/signin"
           NEXT_PUBLIC_CLERK_SIGN_UP_URL="/register"
+          NEXT_PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL="/account"
+          NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL="/account"
           NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="pk_test_ZGlyZWN0LWhhZGRvY2stNzQuY2xlcmsuYWNjb3VudHMuZGV2JA"
           CLERK_SECRET_KEY="sk_test_vV4gXXxT3rEgLOwkKjyryCkKBph4HGgZtFye7PKfMG"
           WEBHOOK_SECRET="whsec_JH68J74qMRS67yeyv3f92KejkOkHITQ0"

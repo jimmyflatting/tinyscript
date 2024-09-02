@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     },
     subscription_status: {
       type: String,
-      enum: ['active', 'trial', 'canceled'],
+      enum: ['trial', 'starter', 'plus', 'pro'],
       default: 'trial',
     },
     stripe: {
