@@ -9,7 +9,7 @@ function Sidebar() {
           <div className="flex items-center gap-2 rounded-md p-2 hover:bg-muted">
             <div className="font-medium">John Doe</div>
             <div className="text-sm text-muted-foreground">
-              Hey, how's it going?
+              Hey, how&apos;s it going?
             </div>
           </div>
 
@@ -33,7 +33,7 @@ function Sidebar() {
             <div>
               <div className="font-medium">Bob Johnson</div>
               <div className="text-sm text-muted-foreground">
-                Let's discuss the project details.
+                Let&apos;s discuss the project details.
               </div>
             </div>
           </Link>

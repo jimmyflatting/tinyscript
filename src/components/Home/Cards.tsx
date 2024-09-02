@@ -45,7 +45,7 @@ function Cards() {
             {/* <ScalingIcon className="h-12 w-12 text-primary" /> */}
             <h3 className="text-xl font-bold">Stay in the flow</h3>
             <p className="text-muted-foreground">
-              Maintain momentum in your coding sessions with TinyScript's
+              Maintain momentum in your coding sessions with TinyScript&apos;s
               on-demand guidance, keeping interruptions to a minimum.
             </p>
           </Card>

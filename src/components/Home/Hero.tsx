@@ -9,10 +9,10 @@ function Hero() {
       <div className="container relative z-10 px-4 md:px-6 mx-auto">
         <div className="flex flex-col items-center text-center md:items-start md:text-left max-w-3xl">
           <h1 className="text-3xl font-bold tracking-tighter text-primary sm:text-5xl xl:text-6xl/none mb-4">
-            We're changing the way you code
+            We&apos;re changing the way you code
           </h1>
           <p className="text-gray-300 md:text-xl mb-8 max-w-2xl">
-            From squashing bugs to building features—when you're in a bind,
+            From squashing bugs to building features—when you&apos;re in a bind,
             TinyScript is here to help.
           </p>
           <Link
