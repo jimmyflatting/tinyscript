@@ -61,7 +61,7 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           password: ${{ secrets.VPS_PASSWORD }}
           script: |
-            docker system prune --filter "until=24h"
+            docker system prune --filter "until=24h" -f
             docker pull ghcr.io/jimmyflatting/tinyscript:latest
             docker stop tinyscript
             docker rm tinyscript
