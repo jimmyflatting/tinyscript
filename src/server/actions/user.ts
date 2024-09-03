@@ -38,6 +38,8 @@ export const createUser = async (data: User) => {
       name: data.full_name,
     });
 
+    console.log(customer);
+
     // Create the Stripe document
     const stripeDoc = await StripeModel.create({
       user: customer.id, // Use the Stripe customer ID directly
@@ -48,11 +50,15 @@ export const createUser = async (data: User) => {
       cancel_at_period_end: false,
     });
 
+    console.log(stripeDoc);
+
     // Create the user document
     const user = await UserModel.create({
       ...data,
       stripe: stripeDoc._id, // Reference the Stripe document
     });
+
+    console.log(user);
 
     return user;
   } catch (error) {

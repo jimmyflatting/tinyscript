@@ -11,7 +11,6 @@ export default async function Page() {
   const productsResponse = await getStripeProducts();
   const products = productsResponse.data;
 
-  // console.log(products);
   return (
     <>
       <Hero />
