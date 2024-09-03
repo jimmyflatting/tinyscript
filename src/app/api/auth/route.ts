@@ -99,7 +99,7 @@ export async function POST(req: Request) {
       await updateUser(id as string, userData as User);
     }
 
-    return NextResponse.json({ status: 200 });
+    return new Response('', { status: 200 });
   }
   return new Response('', { status: 200 });
 }
