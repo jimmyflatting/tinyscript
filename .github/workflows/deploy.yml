@@ -22,23 +22,23 @@ jobs:
       - name: Create .env file
         run: |
           cat <<EOF > .env
-          ${{ secrets.NEXT_PUBLIC_APP_URL }}
-          ${{ secrets.MONGODB_URI }}
+          NEXT_PUBLIC_APP_URL=${{ secrets.NEXT_PUBLIC_APP_URL }}
+          MONGODB_URI=${{ secrets.MONGODB_URI }}
 
-          ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
-          ${{ secrets.CLERK_SECRET_KEY }}
-          ${{ secrets.WEBHOOK_SECRET }}
-          ${{ secrets.NEXT_PUBLIC_CLERK_SIGN_IN_URL }}
-          ${{ secrets.NEXT_PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL}}
-          ${{ secrets.NEXT_PUBLIC_CLERK_SIGN_UP_URL }}
-          ${{ secrets.NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL}}
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+          CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}
+          WEBHOOK_SECRET=${{ secrets.WEBHOOK_SECRET }}
+          NEXT_PUBLIC_CLERK_SIGN_IN_URL=${{ secrets.NEXT_PUBLIC_CLERK_SIGN_IN_URL }}
+          NEXT_PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL=${{ secrets.NEXT_PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL}}
+          NEXT_PUBLIC_CLERK_SIGN_UP_URL=${{ secrets.NEXT_PUBLIC_CLERK_SIGN_UP_URL }}
+          NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL=${{ secrets.NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL}}
 
-          ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
-          ${{ secrets.STRIPE_SECRET_KEY }}
-          ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+          STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}
+          STRIPE_WEBHOOK_SECRET=${{ secrets.STRIPE_WEBHOOK_SECRET }}
 
-          ${{ secrets.SYSTEM_PROMPT }}
-          ${{ secrets.REPLICATE_API_TOKEN }}
+          SYSTEM_PROMPT=${{ secrets.SYSTEM_PROMPT }}
+          REPLICATE_API_TOKEN=${{ secrets.REPLICATE_API_TOKEN }}
           EOF
         shell: bash
 
