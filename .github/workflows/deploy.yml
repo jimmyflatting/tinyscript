@@ -22,22 +22,23 @@ jobs:
       - name: Create .env file
         run: |
           cat <<EOF > .env
-          NEXT_PUBLIC_APP_URL="https://tinyscript.io"
-          MONGODB_URI="mongodb+srv://jimmyflatting:LtCXZXsBYz1YXkEW@tinyscript.zm0j4.mongodb.net/?retryWrites=true&w=majority&appName=tinyscript"
-          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="pk_test_ZGlyZWN0LWhhZGRvY2stNzQuY2xlcmsuYWNjb3VudHMuZGV2JA"
-          CLERK_SECRET_KEY="sk_test_vV4gXXxT3rEgLOwkKjyryCkKBph4HGgZtFye7PKfMG"
-          NEXT_PUBLIC_CLERK_SIGN_IN_URL="/signin"
-          NEXT_PUBLIC_CLERK_SIGN_UP_URL="/register"
-          NEXT_PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL="/account"
-          NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL="/account"
-          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="pk_test_ZGlyZWN0LWhhZGRvY2stNzQuY2xlcmsuYWNjb3VudHMuZGV2JA"
-          CLERK_SECRET_KEY="sk_test_vV4gXXxT3rEgLOwkKjyryCkKBph4HGgZtFye7PKfMG"
-          WEBHOOK_SECRET="whsec_JH68J74qMRS67yeyv3f92KejkOkHITQ0"
-          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_test_51PqzyfGq5NXltWykwAxT7e6pq1YaEdKf7uyjNnI5r259tm34iv1imtThLDpEzTmNogrSPJQ3cZRm8X3o1OaCVazt004sof6eBi"
-          STRIPE_SECRET_KEY="sk_test_51PqzyfGq5NXltWykaX6tetM78TWNSYYUPPnh1d5eOzymrelgCRRoie5ifOA1e0B3CrMsjLLoCxbeJDUlJWQQ2MbA005Tad5Y7Y"
-          STRIPE_WEBHOOK_SECRET="whsec_e7d831cf9f1d9900cced8dfdf0ed62605f6b4071b9d95632202f4e827142aba6"
-          SYSTEM_PROMPT="You are a helpful assistant that can answer questions and help with tasks. You are a helpful assistant that can answer questions and help with tasks."
-          REPLICATE_API_TOKEN="r8_OXegDY4kkkbaJXrRXDvmxfkrAXSYUTJ21rSTA"
+          ${{ secrets.NEXT_PUBLIC_APP_URL }}
+          ${{ secrets.MONGODB_URI }}
+
+          ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+          ${{ secrets.CLERK_SECRET_KEY }}
+          ${{ secrets.WEBHOOK_SECRET }}
+          ${{ secrets.NEXT_PUBLIC_CLERK_SIGN_IN_URL }}
+          ${{ secrets.NEXT_PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL}}
+          ${{ secrets.NEXT_PUBLIC_CLERK_SIGN_UP_URL }}
+          ${{ secrets.NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL}}
+
+          ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+          ${{ secrets.STRIPE_SECRET_KEY }}
+          ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+
+          ${{ secrets.SYSTEM_PROMPT }}
+          ${{ secrets.REPLICATE_API_TOKEN }}
           EOF
         shell: bash
 
