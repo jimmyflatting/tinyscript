@@ -1,54 +1,38 @@
-import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
-function Sidebar() {
+interface ChatHistory {
+  id: string;
+  title: string;
+}
+
+interface SidebarProps {
+  chatHistory: ChatHistory[];
+  onChatSelect: (id: string) => void;
+}
+
+function Sidebar({ chatHistory, onChatSelect }: SidebarProps) {
+  const [selectedChat, setSelectedChat] = useState<string | null>(
+    chatHistory[0].id
+  );
+
   return (
     <aside className="hidden w-64 flex-col border-r bg-background p-4 sm:flex">
       <div className="flex-1 overflow-auto">
         <div className="space-y-2">
-          <div className="flex items-center gap-2 rounded-md p-2 hover:bg-muted">
-            <div className="font-medium">John Doe</div>
-            <div className="text-sm text-muted-foreground">
-              Hey, how&apos;s it going?
-            </div>
-          </div>
-
-          <Link
-            href="#"
-            className="flex items-center gap-2 rounded-md p-2 hover:bg-muted"
-            prefetch={false}
-          >
-            <div>
-              <div className="font-medium">Jane Smith</div>
-              <div className="text-sm text-muted-foreground">
-                Did you see the new update?
-              </div>
-            </div>
-          </Link>
-          <Link
-            href="#"
-            className="flex items-center gap-2 rounded-md p-2 hover:bg-muted"
-            prefetch={false}
-          >
-            <div>
-              <div className="font-medium">Bob Johnson</div>
-              <div className="text-sm text-muted-foreground">
-                Let&apos;s discuss the project details.
-              </div>
-            </div>
-          </Link>
-          <Link
-            href="#"
-            className="flex items-center gap-2 rounded-md p-2 hover:bg-muted"
-            prefetch={false}
-          >
-            <div>
-              <div className="font-medium">Emily Davis</div>
-              <div className="text-sm text-muted-foreground">
-                I have a question about the feature.
-              </div>
-            </div>
-          </Link>
+          {chatHistory.map((chat) => (
+            <button
+              key={chat.id}
+              className={`w-full text-left flex items-center gap-2 rounded-md p-2 hover:bg-muted transition-colors duration-200 ${
+                selectedChat === chat.id ? "bg-muted" : ""
+              }`}
+              onClick={() => {
+                setSelectedChat(chat.id);
+                onChatSelect(chat.id);
+              }}
+            >
+              <div className="font-medium">{chat.title}</div>
+            </button>
+          ))}
         </div>
       </div>
     </aside>
