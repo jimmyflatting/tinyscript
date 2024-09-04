@@ -5,19 +5,70 @@ import dbConnect from '@/server/config/db';
 import UserModel from '@/server/data/user';
 import StripeModel from '@/server/data/stripe';
 import { User } from '@/lib/types';
+import Stripe from 'stripe';
+import { Product } from '@/types/product';
 
-export async function getStripeProducts() {
-  try {
-    const products = await stripe.products.list({
-      active: true,
-      expand: ['data.prices'],
-      limit: 100,
-    });
-    return products;
-  } catch (error) {
-    console.error('Error getting stripe products:', error);
-    throw error;
-  }
+
+export async function getStripeProducts(): Promise<Product[]> {
+  const stripeProducts = await stripe.products.list({
+    expand: ['data.default_price'],
+    active: true,
+  });
+
+  const products: Product[] = await Promise.all(
+    stripeProducts.data.map(async (product) => {
+      const prices = await stripe.prices.list({
+        product: product.id,
+        active: true,
+      });
+
+      const getFeatures = (price: Stripe.Price): string[] => {
+        const features: string[] = [];
+        if (price.metadata) {
+          for (let i = 1; price.metadata[`feature_${i}`]; i++) {
+            features.push(price.metadata[`feature_${i}`]);
+          }
+        }
+        return features;
+      };
+
+      const monthlyPrice = prices.data.find(price => price.recurring?.interval === 'month');
+      const yearlyPrice = prices.data.find(price => price.recurring?.interval === 'year');
+
+      return {
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        image: product.images[0] || '',
+        prices: {
+          month: monthlyPrice ? {
+            id: monthlyPrice.id,
+            unit_amount: monthlyPrice.unit_amount || 0,
+            currency: monthlyPrice.currency,
+            features: getFeatures(monthlyPrice),
+          } : {
+            id: '',
+            unit_amount: 0,
+            currency: 'usd',
+            features: [],
+          },
+          year: yearlyPrice ? {
+            id: yearlyPrice.id,
+            unit_amount: yearlyPrice.unit_amount || 0,
+            currency: yearlyPrice.currency,
+            features: getFeatures(yearlyPrice),
+          } : {
+            id: '',
+            unit_amount: 0,
+            currency: 'usd',
+            features: [],
+          },
+        },
+      };
+    })
+  );
+
+  return products;
 }
 
 export async function createStripeCheckout(userId: string, productId: string) {
