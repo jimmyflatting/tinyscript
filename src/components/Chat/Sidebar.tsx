@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 
 interface ChatHistory {
@@ -7,13 +9,16 @@ interface ChatHistory {
 
 interface SidebarProps {
   chatHistory: ChatHistory[];
-  onChatSelect: (id: string) => void;
 }
 
-function Sidebar({ chatHistory, onChatSelect }: SidebarProps) {
+function Sidebar({ chatHistory }: SidebarProps) {
   const [selectedChat, setSelectedChat] = useState<string | null>(
-    chatHistory[0].id
+    chatHistory[0]?.id ?? null
   );
+
+  const onChatSelect = (id: string) => {
+    setSelectedChat(id);
+  };
 
   return (
     <aside className="hidden w-64 flex-col border-r bg-background p-4 sm:flex">
@@ -27,7 +32,6 @@ function Sidebar({ chatHistory, onChatSelect }: SidebarProps) {
               }`}
               onClick={() => {
                 setSelectedChat(chat.id);
-                onChatSelect(chat.id);
               }}
             >
               <div className="font-medium">{chat.title}</div>

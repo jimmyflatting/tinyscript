@@ -23,14 +23,18 @@ const userSchema = new mongoose.Schema({
       enum: ['trial', 'starter', 'plus', 'pro'],
       default: 'trial',
     },
+    available_tokens: {
+      type: Number,
+      default: 10,
+    },
     stripe: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Stripe',
     },
-    items: [
+    conversations: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Item',
+            ref: 'Conversation',
         },
     ],
 })

@@ -3,18 +3,33 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
+import { createMessage, getConversations } from "@/server/actions/item";
+import { useAuth } from "@clerk/nextjs";
 
 interface Message {
-  user: "user" | "ai";
+  role: "user" | "assistant";
   content: string;
 }
 
-interface InterfaceProps {
-  messages: Message[][];
-  onNewMessage: (message: Message) => void;
+interface Conversation {
+  _id: string;
+  messages: Message[];
 }
 
-function Interface({ messages, onNewMessage }: InterfaceProps) {
+interface InterfaceProps {
+  userId: string;
+  conversations: Conversation[];
+}
+
+const Interface: React.FC<InterfaceProps> = ({
+  userId,
+  conversations: initialConversations,
+}) => {
+  const { userId: userIdFromAuth } = useAuth();
+  const [conversations, setConversations] =
+    useState<Conversation[]>(initialConversations);
+  const [currentConversation, setCurrentConversation] =
+    useState<Conversation | null>(null);
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [typingText, setTypingText] = useState("");
@@ -22,45 +37,71 @@ function Interface({ messages, onNewMessage }: InterfaceProps) {
     {}
   );
 
-  const sendMessage = () => {
-    if (inputMessage.trim() === "") return;
+  useEffect(() => {
+    if (userIdFromAuth) {
+      loadConversations();
+    }
+  }, [userIdFromAuth]);
 
-    const newUserMessage: Message = { user: "user", content: inputMessage };
-    onNewMessage(newUserMessage);
-    setInputMessage("");
+  const loadConversations = async () => {
+    if (!userIdFromAuth) return;
+    const loadedConversations = await getConversations(userIdFromAuth);
+    const formattedConversations = loadedConversations.map((conv) => ({
+      ...conv,
+      _id: conv._id.toString(),
+    }));
+    setConversations(formattedConversations);
+    if (formattedConversations.length > 0) {
+      setCurrentConversation(formattedConversations[0]);
+    }
+  };
+
+  const sendMessage = async () => {
+    if (!userIdFromAuth || inputMessage.trim() === "") return;
     setIsTyping(true);
 
-    // Simulate AI response with a C code snippet
-    setTimeout(() => {
-      const aiResponse = `Sure, here is a "Hello World" program in C:
-
-\`\`\`c
-#include <stdio.h>
-
-int main() {
-    printf("Hello, World!\\n");
-    return 0;
-}
-\`\`\`
-
-This is a simple C program that prints "Hello, World!" to the console.`;
-
-      typeResponse(aiResponse);
-    }, 1000);
+    try {
+      const result = await createMessage(
+        userIdFromAuth,
+        inputMessage,
+        currentConversation?._id.toString()
+      );
+      if (!currentConversation) {
+        setCurrentConversation({
+          _id: result.conversationId.toString(),
+          messages: [
+            { role: "user", content: result.userMessage },
+            { role: "assistant", content: result.aiMessage },
+          ],
+        });
+      } else {
+        setCurrentConversation((prevConv) => ({
+          ...prevConv!,
+          messages: [
+            ...prevConv!.messages,
+            { role: "user", content: result.userMessage },
+            { role: "assistant", content: result.aiMessage },
+          ],
+        }));
+      }
+    } catch (error) {
+      console.error("Error processing message:", error);
+    } finally {
+      setIsTyping(false);
+      setInputMessage("");
+    }
   };
 
   const typeResponse = (response: string) => {
     let i = 0;
-    setTypingText(response[0]); // Start with the first character
+    setTypingText(response[0]);
     const typingInterval = setInterval(() => {
       if (i < response.length - 1) {
-        // Changed condition to length - 1
         i++;
         setTypingText((prev) => prev + response[i]);
       } else {
         clearInterval(typingInterval);
         setIsTyping(false);
-        onNewMessage({ user: "ai", content: response });
         setTypingText("");
       }
     }, 50);
@@ -133,21 +174,23 @@ This is a simple C program that prints "Hello, World!" to the console.`;
     <div className="flex flex-1 flex-col">
       <div className="flex-1 overflow-auto p-4">
         <div className="grid gap-6">
-          {messages.map((message, index) => (
-            <React.Fragment key={index}>
-              <div className="flex items-start gap-4 justify-end">
-                <div className="rounded-lg bg-primary p-3 text-sm text-primary-foreground max-w-[60%]">
-                  {renderMessage(message[0].content)}
-                </div>
+          {currentConversation?.messages.map((message, index) => (
+            <div
+              key={index}
+              className={`flex items-start gap-4 ${
+                message.role === "user" ? "justify-end" : ""
+              }`}
+            >
+              <div
+                className={`rounded-lg ${
+                  message.role === "user"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted"
+                } p-3 text-sm max-w-[60%]`}
+              >
+                {renderMessage(message.content)}
               </div>
-              {message[1] && (
-                <div className="flex items-start gap-4 ">
-                  <div className="rounded-lg bg-muted p-3 text-sm max-w-[60%]">
-                    {renderMessage(message[1].content)}
-                  </div>
-                </div>
-              )}
-            </React.Fragment>
+            </div>
           ))}
           {isTyping && (
             <div className="flex items-start gap-4">
@@ -162,7 +205,7 @@ This is a simple C program that prints "Hello, World!" to the console.`;
         <div className="relative">
           <Textarea
             placeholder="Type your message..."
-            className="min-h-[48px] rounded-2xl resize-none pr-12" // Adjusted padding-right
+            className="min-h-[48px] rounded-2xl resize-none pr-12"
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyPress={(e) => {
@@ -175,7 +218,7 @@ This is a simple C program that prints "Hello, World!" to the console.`;
           <Button
             type="button"
             size="icon"
-            className="absolute right-2 top-1/2 transform -translate-y-1/2" // Centered vertically
+            className="absolute right-2 top-1/2 transform -translate-y-1/2"
             onClick={sendMessage}
           >
             <SendIcon className="w-4 h-4" />
@@ -185,7 +228,7 @@ This is a simple C program that prints "Hello, World!" to the console.`;
       </div>
     </div>
   );
-}
+};
 
 function TypingIndicator() {
   return (

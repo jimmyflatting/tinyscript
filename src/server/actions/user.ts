@@ -1,3 +1,5 @@
+"use server";
+
 import dbConnect from '@/server/config/db';
 import UserModel from '@/server/data/user';
 import StripeModel from '@/server/data/stripe';

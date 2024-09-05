@@ -133,3 +133,25 @@ export async function createStripePortal(userId: string) {
     }
   }
 }
+
+export async function updateUserTokens(userId: string) {
+  await dbConnect();
+  await UserModel.updateOne({ clerkId: userId }, { $inc: { available_tokens: -1 } });
+}
+
+export async function updateUserSubscription(userId: string, subscription: string) {
+  await dbConnect();
+  await UserModel.updateOne({ clerkId: userId }, { $set: { subscription_status: subscription } });
+
+  switch (subscription) { 
+    case 'pro':
+      await UserModel.updateOne({ clerkId: userId }, { $set: { available_tokens: 10000 } });
+      break;
+    case 'plus':
+      await UserModel.updateOne({ clerkId: userId }, { $set: { available_tokens: 5000 } });
+      break;
+    case 'starter':
+      await UserModel.updateOne({ clerkId: userId }, { $set: { available_tokens: 2500 } });
+      break;
+  }
+}
