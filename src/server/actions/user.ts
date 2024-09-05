@@ -1,4 +1,4 @@
-"use server";
+'use server';
 
 import dbConnect from '@/server/config/db';
 import UserModel from '@/server/data/user';
