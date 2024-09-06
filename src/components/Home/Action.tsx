@@ -9,22 +9,12 @@ function Action() {
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-              Ready to Take Your Business to the Next Level?
+              It's just another LLM platform.
             </h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Sign up for a free trial and experience the power of our SaaS
-              platform today.
+              It's kinda good but try it out for yourself. - Any money made will
+              be reinvested into the project.
             </p>
-          </div>
-          <div className="mx-auto w-full max-w-sm space-y-2">
-            <form className="flex gap-2">
-              <Input
-                type="email"
-                placeholder="Enter your email"
-                className="max-w-lg flex-1"
-              />
-              <Button type="submit">Start Free Trial</Button>
-            </form>
           </div>
         </div>
       </div>
