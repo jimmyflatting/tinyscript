@@ -12,8 +12,8 @@ function Action() {
               It's just another LLM platform.
             </h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              It's kinda good but try it out for yourself. - Any money made will
-              be reinvested into the project.
+              It&apos;s kinda good but try it out for yourself. - Any money made
+              will be reinvested into the project.
             </p>
           </div>
         </div>
