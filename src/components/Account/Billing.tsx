@@ -41,9 +41,9 @@ function Billing() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <div className="text-sm text-muted-foreground mb-3">
+            {/* <div className="text-sm text-muted-foreground mb-3">
               Your current plan is the Pro plan at $9 per month.
-            </div>
+            </div> */}
             <div className="text-sm text-muted-foreground">
               You can update your payment method, view invoices, and cancel your
               subscription from the customer portal.
