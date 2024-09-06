@@ -12,7 +12,7 @@ import { Button } from "../ui/button";
 import { Switch } from "../ui/Switch";
 import { Product } from "@/types/product";
 import { CheckIcon } from "lucide-react";
-
+import { useRouter } from "next/navigation";
 interface PricingProps {
   products: Product[];
 }
@@ -22,6 +22,7 @@ interface PricingProps {
 }
 
 function Pricing({ products }: PricingProps) {
+  const router = useRouter();
   const [interval, setInterval] = useState<"month" | "year">("month");
 
   const sortedProducts = useMemo(() => {
@@ -96,6 +97,9 @@ function Pricing({ products }: PricingProps) {
               <CardFooter>
                 <Button
                   className="w-full"
+                  onClick={() => {
+                    router.push("/register");
+                  }}
                   disabled={product.prices[interval].unit_amount === 0}
                 >
                   Get Started

@@ -4,6 +4,7 @@ import React from "react";
 import { Card } from "./card";
 import { Button } from "./button";
 import { CheckIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface Product {
   id: string;
@@ -16,9 +17,12 @@ interface Product {
 }
 
 function PriceCard({ product }: { product: Product }) {
+  const router = useRouter();
   const handleClick = () => {
     console.log(product);
     // Implement your checkout logic here
+    // link to /register
+    router.push("/register");
   };
 
   console.log(product);
