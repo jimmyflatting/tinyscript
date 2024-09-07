@@ -3,13 +3,9 @@ import Interface from "@/components/Chat/Interface";
 import Sidebar from "@/components/Chat/Sidebar";
 import { auth } from "@clerk/nextjs/server";
 import { getConversations } from "@/server/actions/item";
-import ReactGA from "react-ga4";
 
 const Page = async () => {
   const { userId } = auth();
-
-  ReactGA.initialize("G-0J51VNPXCB");
-  ReactGA.send({ hitType: "pageview", pagePath: "/app" });
 
   if (!userId) {
     // Handle the case where there is no authenticated user

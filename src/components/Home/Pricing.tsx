@@ -13,16 +13,15 @@ import { Switch } from "../ui/Switch";
 import { Product } from "@/types/product";
 import { CheckIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-interface PricingProps {
-  products: Product[];
-}
+import { useAuth } from "@clerk/nextjs";
 
 interface PricingProps {
   products: Product[];
 }
 
-function Pricing({ products }: PricingProps) {
+function Pricing({ products, user }: PricingProps) {
   const router = useRouter();
+  const { userId } = useAuth();
   const [interval, setInterval] = useState<"month" | "year">("month");
 
   const sortedProducts = useMemo(() => {
@@ -97,12 +96,22 @@ function Pricing({ products }: PricingProps) {
               <CardFooter>
                 <Button
                   className="w-full"
-                  onClick={() => {
-                    router.push("/register");
+                  onClick={async () => {
+                    if (userId) {
+                      try {
+                        const { url } = await createPortalSession();
+                        router.push(url);
+                      } catch (error) {
+                        console.error("Error creating portal session:", error);
+                        // Handle error (e.g., show an error message to the user)
+                      }
+                    } else {
+                      router.push("/register");
+                    }
                   }}
                   disabled={product.prices[interval].unit_amount === 0}
                 >
-                  Get Started
+                  {userId ? "Manage Subscription" : "Get Started"}
                 </Button>
               </CardFooter>
             </Card>
