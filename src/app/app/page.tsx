@@ -3,6 +3,12 @@ import Interface from "@/components/Chat/Interface";
 import Sidebar from "@/components/Chat/Sidebar";
 import { auth } from "@clerk/nextjs/server";
 import { getConversations } from "@/server/actions/item";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "App | TinyScript",
+  description: "Easy code LLM for your projects",
+};
 
 const Page = async () => {
   const { userId } = auth();

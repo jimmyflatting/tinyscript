@@ -1,5 +1,11 @@
 import Billing from "@/components/Account/Billing";
 import Settings from "@/components/Account/Settings";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Account | TinyScript",
+  description: "Easy code LLM for your projects",
+};
 
 function page() {
   return (
