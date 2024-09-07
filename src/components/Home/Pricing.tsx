@@ -14,12 +14,13 @@ import { Product } from "@/types/product";
 import { CheckIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
+import { createStripeCheckout } from "@/server/actions/stripe";
 
 interface PricingProps {
   products: Product[];
 }
 
-function Pricing({ products, user }: PricingProps) {
+function Pricing({ products }: PricingProps) {
   const router = useRouter();
   const { userId } = useAuth();
   const [interval, setInterval] = useState<"month" | "year">("month");
@@ -98,11 +99,20 @@ function Pricing({ products, user }: PricingProps) {
                   className="w-full"
                   onClick={async () => {
                     if (userId) {
+                      console.log(product);
                       try {
-                        const { url } = await createPortalSession();
-                        router.push(url);
+                        const url = await createStripeCheckout(
+                          userId,
+                          product.prices[interval].id
+                        );
+                        if (url) {
+                          router.push(url);
+                        }
                       } catch (error) {
-                        console.error("Error creating portal session:", error);
+                        console.error(
+                          "Error creating checkout session:",
+                          error
+                        );
                         // Handle error (e.g., show an error message to the user)
                       }
                     } else {
@@ -111,7 +121,7 @@ function Pricing({ products, user }: PricingProps) {
                   }}
                   disabled={product.prices[interval].unit_amount === 0}
                 >
-                  {userId ? "Manage Subscription" : "Get Started"}
+                  Get Started
                 </Button>
               </CardFooter>
             </Card>

@@ -87,10 +87,11 @@ export async function createStripeCheckout(userId: string, productId: string) {
     mode: 'subscription',
   });
 
-  return session;
+  return session.url;
 }
 
-export async function createStripePortal(userId: string) {
+
+export async function createStripePortal(userId: string, productId: string) {
   if (!userId) {
     throw new Error('User ID is required');
   }
