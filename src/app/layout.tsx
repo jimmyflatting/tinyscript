@@ -1,5 +1,4 @@
 import { ClerkProvider } from "@clerk/nextjs";
-import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import { cn } from "@/lib/utils";
 import "./globals.css";
@@ -17,11 +16,6 @@ const fontBody = Manrope({
   display: "swap",
   variable: "--font-body",
 });
-
-export const metadata: Metadata = {
-  title: "TinyScript",
-  description: "Easy code LLM for your projects",
-};
 
 export default function RootLayout({
   children,
