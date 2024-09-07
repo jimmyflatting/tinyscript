@@ -91,7 +91,7 @@ export async function createStripeCheckout(userId: string, productId: string) {
 }
 
 
-export async function createStripePortal(userId: string, productId: string) {
+export async function createStripePortal(userId: string) {
   if (!userId) {
     throw new Error('User ID is required');
   }
