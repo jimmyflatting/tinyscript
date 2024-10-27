@@ -66,4 +66,4 @@ jobs:
             docker pull ghcr.io/jimmyflatting/tinyscript:latest
             docker stop tinyscript
             docker rm tinyscript
-            docker run -d -p 3000:3000 --name tinyscript ghcr.io/jimmyflatting/tinyscript:latest
+            docker run -d -p 8002:8002 --name tinyscript ghcr.io/jimmyflatting/tinyscript:latest
